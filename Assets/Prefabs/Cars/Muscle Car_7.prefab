@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7395954790839101204}
   - component: {fileID: 5187278019248668848}
   - component: {fileID: 818495835414622357}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Muscle Car_7 BR Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 520238982045951868}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.77386475, y: 0.3680954, z: -1.5097351}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2741876897919068745}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5187278019248668848
 MeshFilter:
@@ -95,9 +95,12 @@ GameObject:
   - component: {fileID: 1270790352359384556}
   - component: {fileID: 3910873105287811366}
   - component: {fileID: 7442825204664273888}
-  m_Layer: 0
+  - component: {fileID: 4231852844173464801}
+  - component: {fileID: 5715174837616073551}
+  - component: {fileID: 2956884585549496413}
+  m_Layer: 3
   m_Name: Muscle Car_7
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,17 +112,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3262517280820474099}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 462997261580175618}
   - {fileID: 7395954790839101204}
   - {fileID: 3466612918141376233}
   - {fileID: 426059120614913836}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1270790352359384556
 MeshFilter:
@@ -180,11 +183,80 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3262517280820474099}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 2.2637734, y: 1.3037924, z: 4.712553}
   m_Center: {x: 0.00001579523, y: 0.9511091, z: 0.09785938}
+--- !u!195 &4231852844173464801
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3262517280820474099}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 1.5
+  m_Speed: 8
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 420
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &5715174837616073551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3262517280820474099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385161752bebdb24c88120bce2356bc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &2956884585549496413
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3262517280820474099}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3339128816223352241
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +268,7 @@ GameObject:
   - component: {fileID: 426059120614913836}
   - component: {fileID: 8661976066799687276}
   - component: {fileID: 9205507706684070630}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Muscle Car_7 FR Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,13 +282,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3339128816223352241}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.77386475, y: 0.3680954, z: 1.5097046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2741876897919068745}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8661976066799687276
 MeshFilter:
@@ -279,7 +351,7 @@ GameObject:
   - component: {fileID: 3466612918141376233}
   - component: {fileID: 3854220086213687098}
   - component: {fileID: 4349192591307593308}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Muscle Car_7 FL Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,13 +365,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5215154390622572746}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.77386475, y: 0.3680954, z: 1.5097046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2741876897919068745}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3854220086213687098
 MeshFilter:
@@ -362,7 +434,7 @@ GameObject:
   - component: {fileID: 462997261580175618}
   - component: {fileID: 2229922557210944261}
   - component: {fileID: 747635732903773203}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Muscle Car_7 BL Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,13 +448,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7483870821899171789}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.77386475, y: 0.3680954, z: -1.5097351}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2741876897919068745}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2229922557210944261
 MeshFilter:

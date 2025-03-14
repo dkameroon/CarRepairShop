@@ -5,4 +5,5 @@ using UnityEngine;
 public interface ILiftService
 {
     void BuyAndPlaceLift();
+    List<ILift> GetLifts();
 }

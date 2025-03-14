@@ -12,9 +12,12 @@ GameObject:
   - component: {fileID: 2840244507086414979}
   - component: {fileID: 40079523788820553}
   - component: {fileID: 5184119427446984276}
-  m_Layer: 0
+  - component: {fileID: -7379570368756098125}
+  - component: {fileID: 5151345939779051738}
+  - component: {fileID: 7532075392309351681}
+  m_Layer: 3
   m_Name: Sport Car_36
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,17 +29,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1985692081323815324}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7405105939486770425}
   - {fileID: 3575911438058629829}
   - {fileID: 3652968870233983702}
   - {fileID: 1796267265088626041}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2840244507086414979
 MeshFilter:
@@ -97,11 +100,80 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1985692081323815324}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 2.0243058, y: 1.3239852, z: 5.404602}
   m_Center: {x: 0.000015258789, y: 1.0425453, z: 0.0033758879}
+--- !u!195 &-7379570368756098125
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985692081323815324}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 1.5
+  m_Speed: 8
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 420
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &5151345939779051738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985692081323815324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385161752bebdb24c88120bce2356bc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &7532075392309351681
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985692081323815324}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2567383658879211295
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +185,7 @@ GameObject:
   - component: {fileID: 7405105939486770425}
   - component: {fileID: 7838812089038391549}
   - component: {fileID: 8852622703812745245}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sport Car_36 BL Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,13 +199,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2567383658879211295}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.79937744, y: 0.42388916, z: -1.4890747}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1208452073049090854}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7838812089038391549
 MeshFilter:
@@ -196,7 +268,7 @@ GameObject:
   - component: {fileID: 3575911438058629829}
   - component: {fileID: 8971658554897907409}
   - component: {fileID: 6592624113087529720}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sport Car_36 BR Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,13 +282,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6706535920863073503}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.79940796, y: 0.42388916, z: -1.4890747}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1208452073049090854}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8971658554897907409
 MeshFilter:
@@ -279,7 +351,7 @@ GameObject:
   - component: {fileID: 3652968870233983702}
   - component: {fileID: 6535500821148738218}
   - component: {fileID: 3893988422210544079}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sport Car_36 FL Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,13 +365,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7439822103918596516}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.79937744, y: 0.42388916, z: 1.4890747}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1208452073049090854}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6535500821148738218
 MeshFilter:
@@ -362,7 +434,7 @@ GameObject:
   - component: {fileID: 1796267265088626041}
   - component: {fileID: 4682981063126540589}
   - component: {fileID: 5852201812218175502}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sport Car_36 FR Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,13 +448,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7528684120496241404}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.79940796, y: 0.42388916, z: 1.4890747}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1208452073049090854}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4682981063126540589
 MeshFilter:

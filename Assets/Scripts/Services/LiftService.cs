@@ -6,6 +6,8 @@ public class LiftService : ILiftService
 {
     private IGameManager _gameManager;
     private GameObject _liftPrefab;
+    private List<ILift> _lifts = new List<ILift>();
+
     private List<Vector3> _liftPositions;
     private List<Quaternion> _liftRotations;
     private int _nextLiftIndex = 1;
@@ -34,10 +36,12 @@ public class LiftService : ILiftService
             Quaternion.identity,
             Quaternion.identity
         };
-        
-        Object.Instantiate(_liftPrefab, _liftPositions[0], _liftRotations[0]);
-    }
 
+
+        GameObject firstLift = Object.Instantiate(_liftPrefab, _liftPositions[0], _liftRotations[0]);
+        _lifts.Add(firstLift.GetComponent<ILift>());
+    }
+    
     public void BuyAndPlaceLift()
     {
         int liftCost = 100;
@@ -50,13 +54,19 @@ public class LiftService : ILiftService
 
         if (_gameManager.GetMoney() >= liftCost)
         {
-            _gameManager.SpendMoney(liftCost);
-            Object.Instantiate(_liftPrefab, _liftPositions[_nextLiftIndex], _liftRotations[_nextLiftIndex]);
+            _gameManager.AddMoney(-liftCost);
+            GameObject newLift = Object.Instantiate(_liftPrefab, _liftPositions[_nextLiftIndex], _liftRotations[_nextLiftIndex]);
+            _lifts.Add(newLift.GetComponent<ILift>());
             _nextLiftIndex++;
-        }
+            }
         else
         {
             Debug.Log("Not enough money to buy this lift!");
         }
+    }
+
+    public List<ILift> GetLifts()
+    {
+        return _lifts;
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8573213122191071991}
   - component: {fileID: 1501099256532181871}
   - component: {fileID: 3771476938706306466}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Simple Car_6 BR Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241123845089030928}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.68367004, y: 0.29203033, z: -1.2637329}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2459854400119093741}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1501099256532181871
 MeshFilter:
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5890227870721986103}
   - component: {fileID: 7261489655425875139}
   - component: {fileID: 3009219761457065407}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Simple Car_6 FL Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,13 +108,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558611851270745405}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.6812973, y: 0.29203033, z: 1.2637634}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2459854400119093741}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7261489655425875139
 MeshFilter:
@@ -178,9 +178,12 @@ GameObject:
   - component: {fileID: 1552883281715312200}
   - component: {fileID: 3632157875114623618}
   - component: {fileID: 5353190267473039907}
-  m_Layer: 0
+  - component: {fileID: 4407047713542194071}
+  - component: {fileID: -3524523527901237438}
+  - component: {fileID: -4291141631774060003}
+  m_Layer: 3
   m_Name: Simple Car_6
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -192,17 +195,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2983907603227599703}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1902546906727538174}
   - {fileID: 8573213122191071991}
   - {fileID: 5890227870721986103}
   - {fileID: 1461174844214027117}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1552883281715312200
 MeshFilter:
@@ -263,11 +266,80 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2983907603227599703}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1.9145327, y: 1.4118186, z: 3.9835355}
   m_Center: {x: -0.000023812056, y: 0.94840103, z: 0.01726234}
+--- !u!195 &4407047713542194071
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2983907603227599703}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 1.5
+  m_Speed: 8
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 420
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &-3524523527901237438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2983907603227599703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385161752bebdb24c88120bce2356bc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &-4291141631774060003
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2983907603227599703}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3679885571203705075
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +351,7 @@ GameObject:
   - component: {fileID: 1902546906727538174}
   - component: {fileID: 2854719715328992482}
   - component: {fileID: 5450736536032707800}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Simple Car_6 BL Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,13 +365,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3679885571203705075}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.68367004, y: 0.29203033, z: -1.2637329}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2459854400119093741}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2854719715328992482
 MeshFilter:
@@ -362,7 +434,7 @@ GameObject:
   - component: {fileID: 1461174844214027117}
   - component: {fileID: 5611915474832142923}
   - component: {fileID: 1950516474308178841}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Simple Car_6 FR Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,13 +448,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5632522231927822952}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.68367004, y: 0.29203033, z: 1.2637634}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2459854400119093741}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5611915474832142923
 MeshFilter:
