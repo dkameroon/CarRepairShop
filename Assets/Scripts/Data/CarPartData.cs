@@ -15,4 +15,5 @@ public class CarPartData
     public Sprite icon;
     public int purchaseCost;
     public int repairReward;
+    public float repairTime;
 }

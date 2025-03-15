@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09feeb6d458f8e145ada343cc74683eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  progressBarCanvasPrefab: {fileID: 7443751188401922388, guid: 385bef85b34eaa246827417acfedd3af, type: 3}
 --- !u!65 &-7477765040113043698
 BoxCollider:
   m_ObjectHideFlags: 0

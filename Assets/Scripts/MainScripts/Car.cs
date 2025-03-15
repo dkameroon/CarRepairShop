@@ -8,14 +8,13 @@ public class Car : MonoBehaviour
 {
     private NavMeshAgent _agent;
     private ILift _targetLift;
-    private ICarService _carService;
     private Vector3 finishPosition;
     private bool _isRepaired = false;
     private GameManager _gameManager;
     private CarPartsDatabase carPartsDatabase;
     private IInventory _inventory;
 
-    private bool isWaitingForPart = false;
+    public bool isWaitingForPart = false;
     
     private string requiredPartType;
 
@@ -42,7 +41,6 @@ public class Car : MonoBehaviour
             Debug.LogError("❌ CarPartsDatabase не загружен! Проверьте, находится ли он в Resources.");
         }
 
-        
         SetRandomBreakdown();
     }
 
@@ -99,12 +97,12 @@ public class Car : MonoBehaviour
         {
             return;
         }
+
         if (other.gameObject == _targetLift?.GetGameObject())
         {
             _agent.enabled = false;
-            Debug.Log("Car arrived at lift!");
             transform.SetPositionAndRotation(_targetLift.GetPosition(), _targetLift.GetRotation());
-            
+
             StartCoroutine(RepairCoroutine());
         }
     }
@@ -128,8 +126,8 @@ public class Car : MonoBehaviour
                     yield return new WaitForSeconds(1f);
                 }
 
-                
                 _inventory.RemoveItem(requiredPart.partType, 1);
+                FindObjectOfType<InventoryUI>().UpdateInventoryUI();
                 Debug.Log($"✅ Деталь {requiredPart.partType} куплена, начинаем починку!");
             }
             else
@@ -137,29 +135,31 @@ public class Car : MonoBehaviour
                 _inventory.RemoveItem(requiredPart.partType, 1);
                 Debug.Log($"✅ Деталь {requiredPart.partType} уже есть, начинаем починку!");
             }
+            _targetLift.StartRepair(requiredPart, requiredPart.repairTime);
+            
+            yield return new WaitForSeconds(requiredPart.repairTime);
         }
         else
         {
-            yield break; 
+            yield break;
         }
-
         
-        yield return new WaitForSeconds(20f);
-
-     
         _agent.enabled = true;
+        _isRepaired = true;
         transform.Rotate(0f, 180f, 0f);
         _agent.SetDestination(finishPosition);
-        _targetLift.SetOccupied(false);
-        _isRepaired = true;
+        if (_isRepaired = true)
+        {
+            _targetLift.SetOccupied(false);
+        }
         
-        FindObjectOfType<GameManager>().AddMoney(requiredPart.repairReward);
+        
 
         yield return new WaitForSeconds(10f);
         Destroy(gameObject);
+
+        FindObjectOfType<GameManager>().AddMoney(requiredPart.repairReward);
     }
-
-
 
     private void OnDestroy()
     {

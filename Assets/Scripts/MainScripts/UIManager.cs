@@ -31,6 +31,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdateMoneyText(int amount)
     {
-        moneyText.text = "Money: $" + amount;
+        moneyText.text = "" + amount;
     }
 }

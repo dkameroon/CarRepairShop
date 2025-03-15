@@ -8,4 +8,5 @@ public interface ILift
     void SetOccupied(bool state);
     GameObject GetGameObject();
     CarParts RepairedPart { get; }
+    void StartRepair(CarPartData part, float repairTime);
 }

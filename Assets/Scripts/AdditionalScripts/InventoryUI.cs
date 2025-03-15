@@ -9,22 +9,27 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     [SerializeField] private GameObject inventoryItemTemplate;
     [SerializeField] private Transform inventoryContent;
     [SerializeField] private Button toggleInventoryButton;
+    [SerializeField] private Button closeInventoryButton;
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private CarPartsDatabase carPartsDatabase;
+    
+    [SerializeField] private GameObject progressBarPrefab;
+    private GameObject progressBarInstance;
 
     private IInventory _inventory;
     private GameManager _gameManager;
     private bool _isInventoryOpen = false;
-    
+
     public event Action<CarParts> OnPartBought;
-    
 
     private void Start()
     {
         _inventory = new Inventory();
         _gameManager = FindObjectOfType<GameManager>();
-
+        
         toggleInventoryButton.onClick.AddListener(ToggleInventory);
+        closeInventoryButton.onClick.AddListener(CloseInventory);
+        
         inventoryPanel.SetActive(false);
         UpdateInventoryUI();
     }
@@ -38,6 +43,12 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
         {
             UpdateInventoryUI();
         }
+    }
+
+    private void CloseInventory()
+    {
+        _isInventoryOpen = false;
+        inventoryPanel.SetActive(false);
     }
 
     public void UpdateInventoryUI()
@@ -59,11 +70,12 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     {
         return _inventory;
     }
+
     private void CreateInventoryItemUI(CarPartData partData)
     {
         var inventoryItem = Instantiate(inventoryItemTemplate, inventoryContent);
         inventoryItem.SetActive(true);
-        
+
         TextMeshProUGUI[] textComponents = inventoryItem.GetComponentsInChildren<TextMeshProUGUI>();
         Image iconImage = inventoryItem.GetComponentInChildren<Image>();
         Button purchaseButton = inventoryItem.GetComponentInChildren<Button>();
@@ -97,14 +109,25 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     {
         if (_gameManager.SpendMoney(partData.purchaseCost))
         {
-            _inventory.AddItem(partData.partType, 1);
-            OnPartBought?.Invoke(partData.partType); 
-            Debug.Log($"Purchased {partData.partName}. Remaining money: {_gameManager.GetMoney()}");
+            bool partIsNeeded = FindObjectOfType<Car>()?.isWaitingForPart == true;
+
+            if (partIsNeeded)
+            {
+                
+                OnPartBought?.Invoke(partData.partType);
+                Debug.Log($"✅ Куплена нужная деталь {partData.partName}. Оставшиеся деньги: {_gameManager.GetMoney()}");
+            }
+            else
+            {
+                _inventory.AddItem(partData.partType, 1);
+                Debug.Log($"✅ Куплена деталь {partData.partName}, добавлена в инвентарь. Оставшиеся деньги: {_gameManager.GetMoney()}");
+            }
+
             UpdateInventoryUI();
         }
         else
         {
-            Debug.Log("Not enough money to purchase this item.");
+            Debug.Log("❌ Недостаточно денег для покупки этой детали.");
         }
     }
 
@@ -112,7 +135,47 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     {
         if (moneyText != null)
         {
-            moneyText.text = $"Money: ${_gameManager.GetMoney()}";
+            moneyText.text = $"{_gameManager.GetMoney()}";
+        }
+    }
+
+    
+    public void StartRepairProgressBar(Vector3 liftPosition)
+    {
+        if (progressBarInstance != null)
+        {
+            Destroy(progressBarInstance);
+        }
+
+        progressBarInstance = Instantiate(progressBarPrefab);
+        progressBarInstance.SetActive(true);
+
+
+        Vector3 worldPos = liftPosition + new Vector3(0, 2, 0);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        
+        progressBarInstance.transform.position = screenPos;
+    }
+
+
+    public void UpdateRepairProgressBar(float progress)
+    {
+        if (progressBarInstance != null)
+        {
+            Image progressBarFillImage = progressBarInstance.GetComponentInChildren<Image>();
+            if (progressBarFillImage != null)
+            {
+                progressBarFillImage.fillAmount = progress;
+            }
+        }
+    }
+
+
+    public void HideRepairProgressBar()
+    {
+        if (progressBarInstance != null)
+        {
+            progressBarInstance.SetActive(false);
         }
     }
 }

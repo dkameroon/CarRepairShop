@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour, IGameManager
     private ILiftService _liftService;
     private UIManager _uiManager;
     [SerializeField] private CarPartsDatabase carPartsDatabase;
-    public CarPartsDatabase GetCarPartsDatabase() => carPartsDatabase;
+    public CarPartsDatabase GetCarPartsDatabase() => carPartsDatabase; 
 
     private float _spawnInterval = 20f;
     private float _nextSpawnTime = 0f;
