@@ -9,4 +9,6 @@ public interface ILift
     GameObject GetGameObject();
     CarParts RepairedPart { get; }
     void StartRepair(CarPartData part, float repairTime);
+    void ShowMessageBox(CarPartData part);
+    void HideMessageBox();
 }

@@ -1,12 +1,17 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Inventory : IInventory
 {
     private Dictionary<CarParts, int> _inventory = new Dictionary<CarParts, int>();
+    private CarPartsDatabase _carPartsDatabase;
 
-    public Inventory()
+
+    public Inventory(CarPartsDatabase carPartsDatabase)
     {
+        _carPartsDatabase = carPartsDatabase;
+
         foreach (CarParts part in Enum.GetValues(typeof(CarParts)))
         {
             _inventory[part] = 0; 
@@ -17,6 +22,21 @@ public class Inventory : IInventory
     {
         return _inventory.ContainsKey(part) ? _inventory[part] : 0;
     }
+    
+    public int GetPartCost(CarParts part)
+    {
+        CarPartData partData = _carPartsDatabase.carParts.Find(p => p.partType == part);
+        
+        if (partData != null)
+        {
+            return partData.purchaseCost;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
 
     public void AddItem(CarParts part, int count)
     {

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface ILiftService
 {
-    void BuyAndPlaceLift();
+    void BuyAndPlaceLift(int liftCost);
     List<ILift> GetLifts();
+    bool AllLiftsPurchased();
+    int GetPurchasedLiftsCount();
 }

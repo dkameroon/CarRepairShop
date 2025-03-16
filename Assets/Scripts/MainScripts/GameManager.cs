@@ -7,10 +7,14 @@ public class GameManager : MonoBehaviour, IGameManager
 {
     [SerializeField] private int initialMoney;
     [SerializeField] private List<GameObject> carPrefabs;
+
+    [SerializeField] private UpgradesDatabase upgradesDatabase;
+    
     private ICarService _carService;
     
     private IMoneyService _moneyService;
     private ILiftService _liftService;
+
     private UIManager _uiManager;
     [SerializeField] private CarPartsDatabase carPartsDatabase;
     public CarPartsDatabase GetCarPartsDatabase() => carPartsDatabase; 
@@ -20,13 +24,14 @@ public class GameManager : MonoBehaviour, IGameManager
 
     private void Awake()
     {
-        _moneyService = new MoneyService(initialMoney);
+        _moneyService = new MoneyService(SaveSystem.Load().Money);
+
     }
 
     private void Start()
     {
-        _uiManager = FindObjectOfType<UIManager>();
         _liftService = new LiftService(this, FindObjectOfType<GameBootstrapper>().LiftPrefab);
+        _uiManager = FindObjectOfType<UIManager>();
         _carService = new CarService(
             carPrefabs, 
             new List<Vector3> { new Vector3(3, 0, -65), new Vector3(-3, 0, 25) },
@@ -39,6 +44,8 @@ public class GameManager : MonoBehaviour, IGameManager
         _carService.SpawnCar();
         StartCoroutine(SpawnCarsRoutine());
     }
+
+   
 
     private IEnumerator SpawnCarsRoutine()
     {

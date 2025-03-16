@@ -119,6 +119,7 @@ public class Car : MonoBehaviour
             {
                 isWaitingForPart = true;
                 Debug.Log($"❌ Нет детали {requiredPart.partType}, ожидаем покупки.");
+                _targetLift.ShowMessageBox(requiredPart);
 
                 while (itemCount <= 0)
                 {
@@ -135,6 +136,8 @@ public class Car : MonoBehaviour
                 _inventory.RemoveItem(requiredPart.partType, 1);
                 Debug.Log($"✅ Деталь {requiredPart.partType} уже есть, начинаем починку!");
             }
+
+            _targetLift.HideMessageBox();
             _targetLift.StartRepair(requiredPart, requiredPart.repairTime);
             
             yield return new WaitForSeconds(requiredPart.repairTime);
@@ -143,7 +146,7 @@ public class Car : MonoBehaviour
         {
             yield break;
         }
-        
+        FindObjectOfType<GameManager>().AddMoney(requiredPart.repairReward);
         _agent.enabled = true;
         _isRepaired = true;
         transform.Rotate(0f, 180f, 0f);
@@ -157,9 +160,7 @@ public class Car : MonoBehaviour
 
         yield return new WaitForSeconds(10f);
         Destroy(gameObject);
-
-        FindObjectOfType<GameManager>().AddMoney(requiredPart.repairReward);
-    }
+      }
 
     private void OnDestroy()
     {

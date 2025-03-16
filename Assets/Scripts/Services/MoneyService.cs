@@ -13,7 +13,7 @@ public class MoneyService : IMoneyService
     {
         if (_money >= amount)
         {
-            _money -= amount;
+            AddMoney(-amount);
             return true;
         }
         return false;
@@ -22,5 +22,6 @@ public class MoneyService : IMoneyService
     public void AddMoney(int amount)
     {
         _money += amount;
+        GameData.Instance.SaveMoney(_money);
     }
 }

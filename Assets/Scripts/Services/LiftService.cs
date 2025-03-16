@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LiftService : ILiftService
@@ -38,15 +39,27 @@ public class LiftService : ILiftService
         };
 
 
-        GameObject firstLift = Object.Instantiate(_liftPrefab, _liftPositions[0], _liftRotations[0]);
-        _lifts.Add(firstLift.GetComponent<ILift>());
+        LoadLifts();
     }
     
-    public void BuyAndPlaceLift()
+    
+    private void LoadLifts()
     {
-        int liftCost = 100;
+        int purchasedLifts = SaveSystem.Load().LiftsPurchased;
 
-        if (_nextLiftIndex >= _liftPositions.Count)
+        purchasedLifts = Mathf.Min(purchasedLifts, _liftPositions.Count); 
+
+        for (int i = 0; i < purchasedLifts; i++)
+        {
+            GameObject lift = Object.Instantiate(_liftPrefab, _liftPositions[i], _liftRotations[i]);
+            _lifts.Add(lift.GetComponent<ILift>());
+        }
+
+        _nextLiftIndex = purchasedLifts;
+    }
+    public void BuyAndPlaceLift(int liftCost)
+    {
+        if (AllLiftsPurchased())
         {
             Debug.Log("All lifts have been purchased!");
             return;
@@ -54,15 +67,29 @@ public class LiftService : ILiftService
 
         if (_gameManager.GetMoney() >= liftCost)
         {
-            _gameManager.AddMoney(-liftCost);
+            _gameManager.SpendMoney(liftCost);
             GameObject newLift = Object.Instantiate(_liftPrefab, _liftPositions[_nextLiftIndex], _liftRotations[_nextLiftIndex]);
             _lifts.Add(newLift.GetComponent<ILift>());
+
             _nextLiftIndex++;
-            }
+            GameData.Instance.LiftsPurchased = _nextLiftIndex;
+            GameData.Instance.Save();
+        }
         else
         {
             Debug.Log("Not enough money to buy this lift!");
         }
+    }
+
+
+    public bool AllLiftsPurchased()
+    {
+        return _nextLiftIndex >= _liftPositions.Count;
+    }
+
+    public int GetPurchasedLiftsCount()
+    {
+        return _lifts.Count;
     }
 
     public List<ILift> GetLifts()

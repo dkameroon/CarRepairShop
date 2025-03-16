@@ -22,9 +22,13 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
 
     public event Action<CarParts> OnPartBought;
 
+    private void Awake()
+    {
+        _inventory = new Inventory(carPartsDatabase);
+    }
+
     private void Start()
     {
-        _inventory = new Inventory();
         _gameManager = FindObjectOfType<GameManager>();
         
         toggleInventoryButton.onClick.AddListener(ToggleInventory);
@@ -83,7 +87,7 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
         if (textComponents.Length >= 2)
         {
             textComponents[0].text = partData.partName;
-            textComponents[1].text = $"You have: {_inventory.GetItemCount(partData.partType)}";
+            textComponents[1].text = $"You have: {_inventory.GetItemCount(partData.partType)} \n Cost : {_inventory.GetPartCost(partData.partType)}";
         }
         else
         {

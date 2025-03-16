@@ -1,0 +1,18 @@
+{
+    "Money": 9375,
+    "LiftsPurchased": 1,
+    "upgrades": [
+        {
+            "upgradeType": 0,
+            "currentLevel": 0
+        },
+        {
+            "upgradeType": 1,
+            "currentLevel": 0
+        },
+        {
+            "upgradeType": 2,
+            "currentLevel": 0
+        }
+    ]
+}

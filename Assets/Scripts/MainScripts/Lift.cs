@@ -11,6 +11,10 @@ public class Lift : MonoBehaviour, ILift
     [SerializeField] private GameObject progressBarCanvasPrefab;
     private GameObject progressBarCanvas;
     private Slider progressBar;
+    
+    [SerializeField] private GameObject _messageBoxCanvasPrefab;
+    private GameObject _messageBoxCanvas;
+    private Image _iconImage;
 
     public Lift(GameObject liftObject, CarParts repairedPart)
     {
@@ -21,6 +25,8 @@ public class Lift : MonoBehaviour, ILift
     private void Start()
     {
         progressBarCanvas = Instantiate(progressBarCanvasPrefab, transform.position + Vector3.up * 10f, Quaternion.Euler(45f, -90f, 0f));
+        _messageBoxCanvas = Instantiate(_messageBoxCanvasPrefab, transform.position + Vector3.up * 10f, Quaternion.Euler(45f, -90f, 0f));
+        _messageBoxCanvas.SetActive(false);
         progressBar = progressBarCanvas.GetComponentInChildren<Slider>();
         progressBarCanvas.SetActive(false);
     }
@@ -57,6 +63,47 @@ public class Lift : MonoBehaviour, ILift
     {
         progressBarCanvas.SetActive(true);
         StartCoroutine(RepairCoroutine(part, repairTime));
+    }
+    
+    public void ShowMessageBox(CarPartData part)
+    {
+        
+        GameObject messageBox = _messageBoxCanvas.transform.Find("MessageBox").gameObject;
+        _messageBoxCanvas.SetActive(true);
+
+        
+        Transform iconTransform = messageBox.transform.Find("Icon");
+        if (iconTransform != null)
+        {
+           
+            Image icon = iconTransform.GetComponent<Image>();
+            if (icon != null)
+            {
+               
+                if (part.icon != null)
+                {
+                    icon.sprite = part.icon;
+                }
+                else
+                {
+                    Debug.LogError("Иконка для детали не назначена!");
+                }
+            }
+            else
+            {
+                Debug.LogError("Компонент Image не найден на Icon!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Icon не найден в MessageBox!");
+        }
+    }
+
+
+    public void HideMessageBox()
+    {
+        _messageBoxCanvas.SetActive(false);
     }
 
     private IEnumerator RepairCoroutine(CarPartData part, float repairTime)
