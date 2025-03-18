@@ -112,8 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09feeb6d458f8e145ada343cc74683eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressBarCanvasPrefab: {fileID: 7443751188401922388, guid: 385bef85b34eaa246827417acfedd3af, type: 3}
-  _messageBoxCanvasPrefab: {fileID: 4905495614681662643, guid: 1347c8195427ab54fab949930e492aef, type: 3}
+  _liftCanvasPrefab: {fileID: 3907283112244491521, guid: 9b03b02758f58234da1b76b34aae1f87, type: 3}
+  _moneyPopupPrefab: {fileID: 1970520504427498507, guid: 43d31e85e4ec06f46bc6f46193e1cd33, type: 3}
+  _fragmentsPopupPrefab: {fileID: 8442019023062378195, guid: 06846ee3b73ad874ca15dcc2548e0ff6, type: 3}
 --- !u!65 &-7477765040113043698
 BoxCollider:
   m_ObjectHideFlags: 0

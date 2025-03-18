@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,21 +24,9 @@ public class UpgradeUI : MonoBehaviour
         _upgradeService.SetUpgradeUI(this); 
     }
 
+
     private void Start()
     {
-
-        if (toggleUpgradePanelButton == null || closeUpgradePanelButton == null || upgradePanel == null || upgradeItemTemplate == null || upgradeContent == null || moneyText == null)
-        {
-            Debug.LogError("⚠️ Некоторые ссылки не установлены в инспекторе!");
-            return;
-        }
-
-        if (_gameManager == null)
-        {
-            Debug.LogError("⚠️ GameManager не найден!");
-            return;
-        }
-
         toggleUpgradePanelButton.onClick.AddListener(ToggleUpgradePanel);
         closeUpgradePanelButton.onClick.AddListener(CloseUpgradePanel);
         upgradePanel.SetActive(false);

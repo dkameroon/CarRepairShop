@@ -12,25 +12,23 @@ public class GameManager : MonoBehaviour, IGameManager
     
     private ICarService _carService;
     
-    private IMoneyService _moneyService;
+    private ICurrencyService _currencyService;
     private ILiftService _liftService;
 
     private UIManager _uiManager;
-    [SerializeField] private CarPartsDatabase carPartsDatabase;
-    public CarPartsDatabase GetCarPartsDatabase() => carPartsDatabase; 
 
     private float _spawnInterval = 20f;
     private float _nextSpawnTime = 0f;
 
     private void Awake()
     {
-        _moneyService = new MoneyService(SaveSystem.Load().Money);
-
+        _liftService = new LiftService(this, FindObjectOfType<GameBootstrapper>().LiftPrefab);
+        _currencyService = new CurrencyService(SaveSystem.Load().Money, SaveSystem.Load().Fragments);
     }
 
     private void Start()
     {
-        _liftService = new LiftService(this, FindObjectOfType<GameBootstrapper>().LiftPrefab);
+        
         _uiManager = FindObjectOfType<UIManager>();
         _carService = new CarService(
             carPrefabs, 
@@ -41,12 +39,18 @@ public class GameManager : MonoBehaviour, IGameManager
         
         _uiManager.Initialize(_liftService);
         _uiManager.UpdateMoneyText(GetMoney());
+        _uiManager.UpdateFragmentText(GetFragments());
         _carService.SpawnCar();
         StartCoroutine(SpawnCarsRoutine());
     }
+    
+    public IInventory GetInventory()
+    {
+        return FindObjectOfType<InventoryUI>().GetInventory();
+    }
 
    
-
+    public ILiftService GetLiftService() => _liftService;
     private IEnumerator SpawnCarsRoutine()
     {
         while (true)
@@ -58,20 +62,38 @@ public class GameManager : MonoBehaviour, IGameManager
 
     public void AddMoney(int amount)
     {
-        _moneyService.AddMoney(amount);
+        _currencyService.AddMoney(amount);
         _uiManager.UpdateMoneyText(GetMoney());
+    }
+    
+    public void AddFragments(int amount)
+    {
+        _currencyService.AddFragments(amount);
+        _uiManager.UpdateFragmentText(GetFragments());
     }
 
     public bool SpendMoney(int amount)
     {
-        if (_moneyService.GetMoney() >= amount)
+        if (_currencyService.GetMoney() >= amount)
         {
-            _moneyService.AddMoney(-amount);
+            _currencyService.AddMoney(-amount);
             _uiManager.UpdateMoneyText(GetMoney());
             return true;
         }
         return false;
     }
+    
+    public bool SpendFragments(int amount)
+    {
+        if (_currencyService.GetFragments() >= amount)
+        {
+            _currencyService.AddFragments(-amount);
+            _uiManager.UpdateFragmentText(GetFragments());
+            return true;
+        }
+        return false;
+    }
 
-    public int GetMoney() => _moneyService.GetMoney();
+    public int GetMoney() => _currencyService.GetMoney();
+    public int GetFragments() => _currencyService.GetFragments();
 }

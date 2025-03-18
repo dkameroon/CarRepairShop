@@ -6,7 +6,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
-    [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private TextMeshProUGUI _moneyText;
+    [SerializeField] private TextMeshProUGUI _fragmentsText;
+    
 
     private ILiftService _liftService;
 
@@ -29,6 +31,11 @@ public class UIManager : MonoBehaviour
 
     public void UpdateMoneyText(int amount)
     {
-        moneyText.text = "" + amount;
+        _moneyText.text = "" + amount;
+    }
+    
+    public void UpdateFragmentText(int amount)
+    {
+        _fragmentsText.text = "" + amount;
     }
 }

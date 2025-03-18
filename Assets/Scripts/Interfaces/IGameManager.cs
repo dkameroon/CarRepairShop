@@ -7,4 +7,5 @@ public interface IGameManager
     void AddMoney(int amount);
     bool SpendMoney(int amount);
     int GetMoney();
+    ILiftService GetLiftService();
 }

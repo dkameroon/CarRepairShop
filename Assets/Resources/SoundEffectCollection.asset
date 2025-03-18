@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40577191f38efea428d7a4bff5024c00, type: 3}
+  m_Name: SoundEffectCollection
+  m_EditorClassIdentifier: 
+  sounds:
+  - soundName: Money
+    audioClip: {fileID: 8300000, guid: cc07da32ca84adb47a3022b96d705358, type: 3}

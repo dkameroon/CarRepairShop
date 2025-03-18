@@ -1,5 +1,6 @@
 {
-    "Money": 9375,
+    "Money": 10040,
+    "Fragments": 0,
     "LiftsPurchased": 1,
     "upgrades": [
         {
@@ -14,5 +15,37 @@
             "upgradeType": 2,
             "currentLevel": 0
         }
-    ]
+    ],
+    "inventory": [
+        {
+            "partType": 5,
+            "count": 0
+        },
+        {
+            "partType": 1,
+            "count": 0
+        },
+        {
+            "partType": 0,
+            "count": 0
+        },
+        {
+            "partType": 2,
+            "count": 0
+        },
+        {
+            "partType": 4,
+            "count": 0
+        },
+        {
+            "partType": 6,
+            "count": 0
+        },
+        {
+            "partType": 3,
+            "count": 0
+        }
+    ],
+    "MusicVolume": 0.010665123350918293,
+    "SoundVolume": 0.5
 }

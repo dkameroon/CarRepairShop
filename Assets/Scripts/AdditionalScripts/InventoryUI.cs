@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,17 +21,15 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     private GameManager _gameManager;
     private bool _isInventoryOpen = false;
 
-    public event Action<CarParts> OnPartBought;
-
     private void Awake()
     {
-        _inventory = new Inventory(carPartsDatabase);
+        _inventory = GameBootstrapper.instance.GetInventory();
+        _gameManager = FindObjectOfType<GameManager>();
+        
     }
 
     private void Start()
     {
-        _gameManager = FindObjectOfType<GameManager>();
-        
         toggleInventoryButton.onClick.AddListener(ToggleInventory);
         closeInventoryButton.onClick.AddListener(CloseInventory);
         
@@ -40,6 +39,7 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
 
     private void ToggleInventory()
     {
+        
         _isInventoryOpen = !_isInventoryOpen;
         inventoryPanel.SetActive(_isInventoryOpen);
 
@@ -70,6 +70,7 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
         UpdateMoneyUI();
     }
 
+
     public IInventory GetInventory()
     {
         return _inventory;
@@ -87,7 +88,7 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
         if (textComponents.Length >= 2)
         {
             textComponents[0].text = partData.partName;
-            textComponents[1].text = $"You have: {_inventory.GetItemCount(partData.partType)} \n Cost : {_inventory.GetPartCost(partData.partType)}";
+            textComponents[1].text = $"You have: {_inventory.GetItemCount(partData.partType)} \n Cost : {partData.purchaseCost}";
         }
         else
         {
@@ -109,29 +110,30 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
         }
     }
 
+    
     private void PurchaseItem(CarPartData partData)
     {
         if (_gameManager.SpendMoney(partData.purchaseCost))
         {
-            bool partIsNeeded = FindObjectOfType<Car>()?.isWaitingForPart == true;
-
-            if (partIsNeeded)
+            _inventory.AddItem(partData.partType, 1);
+            if (RepairQueueManager.Instance.HasPendingRepairs(partData.partType))
             {
-                
-                OnPartBought?.Invoke(partData.partType);
-                Debug.Log($"✅ Куплена нужная деталь {partData.partName}. Оставшиеся деньги: {_gameManager.GetMoney()}");
-            }
-            else
-            {
-                _inventory.AddItem(partData.partType, 1);
-                Debug.Log($"✅ Куплена деталь {partData.partName}, добавлена в инвентарь. Оставшиеся деньги: {_gameManager.GetMoney()}");
+                ILift nextLift = RepairQueueManager.Instance.GetNextLift(partData.partType);
+                if (nextLift != null)
+                {
+                    Car car = nextLift.GetCurrentCar();
+                    if (car != null)
+                    {
+                        car.StartRepairWithPart(partData);
+                    }
+                }
             }
 
             UpdateInventoryUI();
         }
         else
         {
-            Debug.Log("❌ Недостаточно денег для покупки этой детали.");
+            Debug.Log("No money.");
         }
     }
 
@@ -144,42 +146,4 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     }
 
     
-    public void StartRepairProgressBar(Vector3 liftPosition)
-    {
-        if (progressBarInstance != null)
-        {
-            Destroy(progressBarInstance);
-        }
-
-        progressBarInstance = Instantiate(progressBarPrefab);
-        progressBarInstance.SetActive(true);
-
-
-        Vector3 worldPos = liftPosition + new Vector3(0, 2, 0);
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-        
-        progressBarInstance.transform.position = screenPos;
-    }
-
-
-    public void UpdateRepairProgressBar(float progress)
-    {
-        if (progressBarInstance != null)
-        {
-            Image progressBarFillImage = progressBarInstance.GetComponentInChildren<Image>();
-            if (progressBarFillImage != null)
-            {
-                progressBarFillImage.fillAmount = progress;
-            }
-        }
-    }
-
-
-    public void HideRepairProgressBar()
-    {
-        if (progressBarInstance != null)
-        {
-            progressBarInstance.SetActive(false);
-        }
-    }
-}
+   }

@@ -11,4 +11,7 @@ public interface ILift
     void StartRepair(CarPartData part, float repairTime);
     void ShowMessageBox(CarPartData part);
     void HideMessageBox();
+    Car GetCurrentCar();
+    void ShowFragmentsPopup(int amount, Vector3 liftPosition);
+
 }

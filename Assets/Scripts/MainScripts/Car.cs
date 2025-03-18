@@ -30,16 +30,6 @@ public class Car : MonoBehaviour
         carPartsDatabase = Resources.Load<CarPartsDatabase>("CarPartsDatabase");
         
         _inventory = FindObjectOfType<InventoryUI>().GetInventory();
-        InventoryUI inventoryUI = FindObjectOfType<InventoryUI>();
-        if (inventoryUI != null)
-        {
-            inventoryUI.OnPartBought += HandlePartBought;
-        }
-
-        if (carPartsDatabase == null)
-        {
-            Debug.LogError("❌ CarPartsDatabase не загружен! Проверьте, находится ли он в Resources.");
-        }
 
         SetRandomBreakdown();
     }
@@ -48,7 +38,7 @@ public class Car : MonoBehaviour
     {
         if (isWaitingForPart && requiredPartType == partType.ToString())
         {
-            StopCoroutine("RepairCoroutine");
+            StopCoroutine(RepairCoroutine());
             StartCoroutine(RepairCoroutine());
         }
     }
@@ -58,11 +48,6 @@ public class Car : MonoBehaviour
         if (carPartsDatabase != null && carPartsDatabase.carParts.Count > 0)
         {
             requiredPartType = carPartsDatabase.carParts[Random.Range(0, carPartsDatabase.carParts.Count)].partType.ToString();
-            Debug.Log($"❌ Машина нуждается в починке: {requiredPartType}");
-        }
-        else
-        {
-            Debug.LogError("❌ Не удалось случайно выбрать поломку! carPartsDatabase пуст.");
         }
     }
 
@@ -73,7 +58,6 @@ public class Car : MonoBehaviour
             DrivePast();
             return;
         }
-
         _targetLift = targetLift;
         _agent.SetDestination(_targetLift.GetPosition());
         _targetLift.SetOccupied(true);
@@ -97,20 +81,28 @@ public class Car : MonoBehaviour
         {
             return;
         }
-
         if (other.gameObject == _targetLift?.GetGameObject())
         {
             _agent.enabled = false;
             transform.SetPositionAndRotation(_targetLift.GetPosition(), _targetLift.GetRotation());
-
             StartCoroutine(RepairCoroutine());
         }
     }
+    
+    
 
+    public void StartRepairWithPart(CarPartData partData)
+    {
+        _inventory.RemoveItem(partData.partType, 1);
+        _targetLift.StartRepair(partData, partData.repairTime);
+        RepairQueueManager.Instance.MarkRepairStarted(partData.partType);
+    }
+    
     private IEnumerator RepairCoroutine()
     {
+        IUpgradeService upgradeService = UpgradeService.Instance;
         CarPartData requiredPart = carPartsDatabase.carParts.Find(p => p.partType.ToString() == requiredPartType);
-
+        
         if (requiredPart != null)
         {
             int itemCount = _inventory.GetItemCount(requiredPart.partType);
@@ -118,56 +110,78 @@ public class Car : MonoBehaviour
             if (itemCount <= 0)
             {
                 isWaitingForPart = true;
-                Debug.Log($"❌ Нет детали {requiredPart.partType}, ожидаем покупки.");
                 _targetLift.ShowMessageBox(requiredPart);
+
+                RepairQueueManager.Instance.AddToQueue(requiredPart.partType, _targetLift);
 
                 while (itemCount <= 0)
                 {
                     itemCount = _inventory.GetItemCount(requiredPart.partType);
-                    yield return new WaitForSeconds(1f);
-                }
 
-                _inventory.RemoveItem(requiredPart.partType, 1);
-                FindObjectOfType<InventoryUI>().UpdateInventoryUI();
-                Debug.Log($"✅ Деталь {requiredPart.partType} куплена, начинаем починку!");
+                    if (itemCount > 0)
+                    {
+                        bool wasRemoved = _inventory.RemoveItem(requiredPart.partType, 1);
+                        if (wasRemoved)
+                        {
+                            FindObjectOfType<InventoryUI>().UpdateInventoryUI();
+                            break;
+                        }
+                    }
+
+                    yield return new WaitForSeconds(0.1f);
+                }
             }
             else
             {
-                _inventory.RemoveItem(requiredPart.partType, 1);
-                Debug.Log($"✅ Деталь {requiredPart.partType} уже есть, начинаем починку!");
+                bool wasRemoved = _inventory.RemoveItem(requiredPart.partType, 1);
+                if (wasRemoved)
+                {
+                    Debug.Log($"✅ Detail {requiredPart.partType} is in inventory, starting repairing!");
+                }
+                else
+                {
+                    yield break;
+                }
             }
-
+            float adjustedRepairTime = requiredPart.repairTime / upgradeService.GetRepairSpeedMultiplier();
             _targetLift.HideMessageBox();
-            _targetLift.StartRepair(requiredPart, requiredPart.repairTime);
-            
-            yield return new WaitForSeconds(requiredPart.repairTime);
+            _targetLift.StartRepair(requiredPart, adjustedRepairTime);
+            yield return new WaitForSeconds(adjustedRepairTime);
         }
         else
         {
             yield break;
         }
-        FindObjectOfType<GameManager>().AddMoney(requiredPart.repairReward);
+
+        Debug.Log(upgradeService.GetProfitMultiplier());
+        int adjustedReward = Mathf.RoundToInt(Random.Range(requiredPart.purchaseCost, requiredPart.repairReward) * upgradeService.GetProfitMultiplier());
+        FindObjectOfType<GameManager>().AddMoney(adjustedReward);
+        SoundEffectsManager.Instance.PlaySound("Money");
+        DropFragments();
         _agent.enabled = true;
         _isRepaired = true;
         transform.Rotate(0f, 180f, 0f);
         _agent.SetDestination(finishPosition);
-        if (_isRepaired = true)
+        if (_isRepaired)
         {
             _targetLift.SetOccupied(false);
         }
-        
-        
 
         yield return new WaitForSeconds(10f);
         Destroy(gameObject);
-      }
+}
 
-    private void OnDestroy()
+    private void DropFragments()
     {
-        InventoryUI inventoryUI = FindObjectOfType<InventoryUI>();
-        if (inventoryUI != null)
+        float chance = Random.Range(0f, 1f);
+
+        if (chance < 0.5f)
         {
-            inventoryUI.OnPartBought -= HandlePartBought;
+            int fragmentsAmount = Random.Range(1, 5);
+            FindObjectOfType<GameManager>().AddFragments(fragmentsAmount);
+            Debug.Log($"Recieved {fragmentsAmount} fragments!");
+            _targetLift.ShowFragmentsPopup(fragmentsAmount, _targetLift.GetPosition());
         }
     }
+
 }

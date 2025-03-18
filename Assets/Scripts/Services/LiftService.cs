@@ -38,7 +38,6 @@ public class LiftService : ILiftService
             Quaternion.identity
         };
 
-
         LoadLifts();
     }
     

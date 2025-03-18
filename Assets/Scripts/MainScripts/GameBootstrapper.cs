@@ -1,43 +1,62 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameBootstrapper : MonoBehaviour
 {
-    [SerializeField] private GameObject liftPrefab;
-    [SerializeField] private UpgradesDatabase upgradesDatabase;
-    [SerializeField] private GameManager gameManager;
+    public static GameBootstrapper instance;
+    
+    [SerializeField] private GameObject _liftPrefab;
+    [SerializeField] private UpgradesDatabase _upgradesDatabase;
+    [SerializeField] private GameManager _gameManager;
+    [SerializeField] private CraftingItemsDatabase _craftingDatabase;
+    [SerializeField] private CraftingUI _craftingUI;
+    [SerializeField] private CarPartsDatabase _carPartsDatabase;
 
-    private UIManager uiManager;
-    private UpgradeUI upgradeUI;
-    private LiftService liftService;
+    private UIManager _uiManager;
+    private UpgradeUI _upgradeUI;
+    private ILiftService _liftService;
+    private IInventory _inventory;
 
-    public GameObject LiftPrefab => liftPrefab;
+    public GameObject LiftPrefab => _liftPrefab;
 
     private void Awake()
     {
-        new GameData(SaveSystem.Load().Money,SaveSystem.Load().LiftsPurchased,SaveSystem.Load().upgrades);
-        uiManager = FindObjectOfType<UIManager>();
-        upgradeUI = FindObjectOfType<UpgradeUI>();
+        instance = this;
+        new GameData(SaveSystem.Load().Money, SaveSystem.Load().Fragments, SaveSystem.Load().LiftsPurchased, SaveSystem.Load().upgrades, SaveSystem.Load().inventory);
+    
+        ICurrencyService currencyService = new CurrencyService(SaveSystem.Load().Money, SaveSystem.Load().Fragments);
+        _inventory = new Inventory(_carPartsDatabase);
+        ICraftingSystem craftingSystem = new CraftingSystem(currencyService, _inventory, _craftingDatabase);
 
-        if (uiManager == null)
+        InventoryUI inventoryUI = FindObjectOfType<InventoryUI>(); 
+
+        if (inventoryUI == null)
         {
-            Debug.LogError("⚠️ UIManager не найден в сцене! Убедитесь, что он присутствует.");
+            Debug.LogError("InventoryUI не найден в сцене!");
         }
         else
         {
-            Debug.Log("✅ UIManager найден.");
+            _craftingUI.Initialize(currencyService, craftingSystem, _craftingDatabase, inventoryUI);
         }
 
-        if (upgradeUI == null)
+        _uiManager = FindObjectOfType<UIManager>();
+        _upgradeUI = FindObjectOfType<UpgradeUI>();
+
+        if (_upgradeUI == null)
         {
-            Debug.LogError("⚠️ UpgradeUI не найден в сцене! Убедитесь, что он присутствует.");
+            Debug.LogError("UpgradeUI не найден в сцене!");
         }
         else
         {
-            UpgradeService upgradeService = new UpgradeService(gameManager, upgradesDatabase, liftService);
-            upgradeUI.Initialize(gameManager, upgradesDatabase, upgradeService);
-            upgradeService.SetUpgradeUI(upgradeUI);
-
+            _liftService = _gameManager.GetLiftService();
+            UpgradeService upgradeService = new UpgradeService(_gameManager, _upgradesDatabase, _liftService);
+            _upgradeUI.Initialize(_gameManager, _upgradesDatabase, upgradeService);
+            upgradeService.SetUpgradeUI(_upgradeUI);
         }
     }
+
+    public IInventory GetInventory()
+    {
+        return _inventory;
+    }
 }
+
