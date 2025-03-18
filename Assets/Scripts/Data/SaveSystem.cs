@@ -18,7 +18,7 @@ public static class SaveSystem
         {
             Debug.LogWarning("⚠ Save file not found! Creating a new one...");
 
-            GameData newGameData = new GameData(10000,0, 1, new List<SaveData>(), new List<InventoryItemSaveData>());
+            GameData newGameData = new GameData(10000,0, 1, 1,new List<SaveData>(), new List<InventoryItemSaveData>());
 
             Save(newGameData);
 

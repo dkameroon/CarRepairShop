@@ -3,6 +3,7 @@ using UnityEngine;
 public interface ILift 
 {
     Vector3 GetPosition();
+    Vector3 GetForwardPosition();
     Quaternion GetRotation();
     bool IsOccupied { get; }
     void SetOccupied(bool state);

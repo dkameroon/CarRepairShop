@@ -47,8 +47,8 @@ public class SettingsUI : MonoBehaviour
     
     private void LoadVolumeSettings()
     {
-        float savedMusicVolume = GameData.Instance.MusicVolume;
-        float savedSFXVolume = GameData.Instance.SoundVolume;
+        float savedMusicVolume = SaveSystem.Load().MusicVolume;
+        float savedSFXVolume = SaveSystem.Load().SoundVolume;
 
         musicVolumeSlider.value = savedMusicVolume;
         sfxVolumeSlider.value = savedSFXVolume;

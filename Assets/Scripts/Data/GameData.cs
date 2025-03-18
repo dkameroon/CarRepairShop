@@ -8,25 +8,29 @@ public class GameData
     public int Money;
     public int Fragments;
     public int LiftsPurchased;
+    public int MechanicsHired;
     public List<SaveData> upgrades = new List<SaveData>();
     public List<InventoryItemSaveData> inventory = new List<InventoryItemSaveData>();
     public float MusicVolume;
     public float SoundVolume;
    
 
-    public GameData(int money, int Fragments, int liftsPurchased,  List<SaveData> upgrades, List<InventoryItemSaveData> inventory)
+    public GameData(int money, int Fragments, int liftsPurchased, int mechanicsHired,  List<SaveData> upgrades, List<InventoryItemSaveData> inventory)
     {
         Instance = this;
         Money = money;
         Fragments = Fragments;
         LiftsPurchased = liftsPurchased;
+        MechanicsHired = mechanicsHired;
         if (upgrades == null || upgrades.Count == 0)
         {
             this.upgrades = new List<SaveData>
             {
                 new SaveData(UpgradeType.BuyLift, 0),
+                new SaveData(UpgradeType.HireMechanic, 0),
                 new SaveData(UpgradeType.IncreaseRepairSpeed, 0),
                 new SaveData(UpgradeType.IncreaseProfit, 0)
+                
             };
         }
         else
@@ -53,6 +57,7 @@ public class GameData
         MusicVolume = 0.5f;
         SoundVolume = 0.5f;
     }
+    
 
     public void SaveUpgrade(UpgradeType upgradeType, int level)
     {
@@ -107,6 +112,7 @@ public class GameData
 
     public void SaveFragments(int fragments)
     {
+        Debug.Log("Fragments Saved!");
         Fragments = fragments;
         SaveSystem.Save(this);
     }
@@ -114,6 +120,12 @@ public class GameData
     public void SaveLiftsPurchased(int liftsPurchased)
     {
         LiftsPurchased = liftsPurchased;
+        SaveSystem.Save(this);
+    }
+    
+    public void SaveMechanicsHired(int mechanicsHired)
+    {
+        MechanicsHired = mechanicsHired;
         SaveSystem.Save(this);
     }
 
@@ -145,7 +157,9 @@ public class GameData
         if (data != null)
         {
             Money = data.Money;
+            Fragments = data.Fragments;
             LiftsPurchased = data.LiftsPurchased;
+            MechanicsHired = data.MechanicsHired;
             upgrades = new List<SaveData>(data.upgrades);
         }
     }

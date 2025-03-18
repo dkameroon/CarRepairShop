@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Inventory :  IInventory
 {
+    public static Inventory Instance;
+
+    
     private Dictionary<CarParts, int> _inventory = new Dictionary<CarParts, int>();
     private CarPartsDatabase _carPartsDatabase;
 
+    public bool HasPart(CarParts part) => _inventory.ContainsKey(part) && _inventory[part] > 0;
 
     public Inventory(CarPartsDatabase carPartsDatabase)
     {

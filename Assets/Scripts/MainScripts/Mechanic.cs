@@ -1,51 +1,69 @@
-/*using System.Collections;
+using System;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Mechanic : MonoBehaviour
+public class Mechanic : MonoBehaviour, IMechanic
 {
-    [SerializeField] private Inventory _inventory;
-    [SerializeField] private Lift _targetLift;
-    private bool isWaitingForPart = false;
-    private string requiredPartType;
-
-    public void StartRepairProcess(string partType, Lift lift)
+    [SerializeField]private NavMeshAgent _agent;
+    private Vector3 _spawnPoint;
+    private ILift _currentLift;
+    public bool IsBusy { get; private set; } 
+    
+    private void Awake()
     {
-        _targetLift = lift;
-        requiredPartType = partType;
-        StartCoroutine(RepairCoroutine());
+        _agent = GetComponent<NavMeshAgent>();
+        _spawnPoint = transform.position;
     }
 
-    private IEnumerator RepairCoroutine()
+
+    public void MoveToLift(ILift lift)
     {
-        CarPartData requiredPart = _inventory.GetPartData(requiredPartType);
-
-        if (requiredPart != null)
+        if (_agent != null)
         {
-            int itemCount = _inventory.GetItemCount(requiredPart.partType);
-
-            if (itemCount <= 0)
-            {
-                isWaitingForPart = true;
-                _targetLift.ShowMessageBox(requiredPart);
-
-                // Добавляем подъёмник в очередь на деталь
-                if (!RepairQueueManager.Instance.IsLiftInQueue(requiredPart.partType, _targetLift))
-                {
-                    RepairQueueManager.Instance.AddToQueue(requiredPart.partType, _targetLift);
-                }
-
-                while (itemCount <= 0)
-                {
-                    itemCount = _inventory.GetItemCount(requiredPart.partType);
-                    yield return new WaitForSeconds(1f);
-                }
-
-                _inventory.RemoveItem(requiredPart.partType, 1);
-                FindObjectOfType<InventoryUI>().UpdateInventoryUI();
-                Debug.Log($"✅ Деталь {requiredPart.partType} куплена, начинаем починку!");
-            }
-
-            _targetLift.StartRepair(requiredPart.partType);
+            _agent.SetDestination(lift.GetForwardPosition()*6 + lift.GetPosition());
+            IsBusy = true;
+            _currentLift = lift;
         }
     }
-}*/
+
+
+    public void MoveToSpawn()
+    {
+        IsBusy = false;
+        _agent.SetDestination(_spawnPoint);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (_currentLift != null && other.gameObject == _currentLift.GetGameObject())
+        {
+            StartRepair(_currentLift);
+        }
+    }
+
+    public void StartRepair(ILift lift)
+    {
+        if (lift == null) return;
+
+        IsBusy = true;
+        Car car = lift.GetCurrentCar();
+
+        if (car != null)
+        {
+            var requiredPart = car.GetRequiredPartData();
+
+            if (Inventory.Instance.HasPart(requiredPart.partType))
+            {
+                lift.StartRepair(requiredPart, requiredPart.repairTime);
+                Inventory.Instance.RemoveItem(requiredPart.partType, 1);
+                MoveToSpawn();
+            }
+            else
+            {
+                Debug.Log("Detail is not found !");
+                MoveToSpawn();
+            }
+        }
+    }
+
+}

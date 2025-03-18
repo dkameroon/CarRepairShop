@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour, IGameManager
     
     private ICurrencyService _currencyService;
     private ILiftService _liftService;
+    private IMechanicService _mechanicService;
 
     private UIManager _uiManager;
 
@@ -22,8 +23,8 @@ public class GameManager : MonoBehaviour, IGameManager
 
     private void Awake()
     {
+        _mechanicService = new MechanicService(this, FindObjectOfType<GameBootstrapper>().MechanicPrefab);
         _liftService = new LiftService(this, FindObjectOfType<GameBootstrapper>().LiftPrefab);
-        _currencyService = new CurrencyService(SaveSystem.Load().Money, SaveSystem.Load().Fragments);
     }
 
     private void Start()
@@ -43,13 +44,18 @@ public class GameManager : MonoBehaviour, IGameManager
         _carService.SpawnCar();
         StartCoroutine(SpawnCarsRoutine());
     }
+
+    public void SetCurrencyService(ICurrencyService currencyService)
+    {
+        _currencyService = currencyService;
+    }
     
     public IInventory GetInventory()
     {
         return FindObjectOfType<InventoryUI>().GetInventory();
     }
 
-   
+    public IMechanicService GetMechanicService() => _mechanicService;
     public ILiftService GetLiftService() => _liftService;
     private IEnumerator SpawnCarsRoutine()
     {

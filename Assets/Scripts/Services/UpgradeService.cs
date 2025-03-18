@@ -9,16 +9,18 @@ public class UpgradeService : IUpgradeService
     private UpgradesDatabase _upgradesDatabase;
     private UpgradeUI _upgradeUI;
     private ILiftService _liftService;
+    private IMechanicService _mechanicService;
 
     private float repairSpeedMultiplier;
     private float profitMultiplier;
 
-    public UpgradeService(IGameManager gameManager, UpgradesDatabase upgradesDatabase, ILiftService liftService)
+    public UpgradeService(IGameManager gameManager, UpgradesDatabase upgradesDatabase, ILiftService liftService, IMechanicService mechanicService)
     {
         Instance = this;
         _gameManager = gameManager;
         _upgradesDatabase = upgradesDatabase;
         _liftService = liftService;
+        _mechanicService = mechanicService;
 
         int repairSpeedLevel = GameData.Instance.GetUpgradeSaveData(UpgradeType.IncreaseRepairSpeed).currentLevel;
         int profitLevel = GameData.Instance.GetUpgradeSaveData(UpgradeType.IncreaseProfit).currentLevel;
@@ -90,7 +92,9 @@ public class UpgradeService : IUpgradeService
             case UpgradeType.BuyLift:
                 _liftService.BuyAndPlaceLift(upgrade.GetCurrentCost(GameData.Instance.GetUpgradeSaveData(upgrade.upgradeType).currentLevel));
                 break;
-
+            case UpgradeType.HireMechanic:
+                _mechanicService.BuyAndSpawnMechanic(upgrade.GetCurrentCost(GameData.Instance.GetUpgradeSaveData(upgrade.upgradeType).currentLevel));
+                break;
             case UpgradeType.IncreaseRepairSpeed:
                 repairSpeedMultiplier *= 1.1f;
                 break;

@@ -98,6 +98,12 @@ public class Car : MonoBehaviour
         RepairQueueManager.Instance.MarkRepairStarted(partData.partType);
     }
     
+    public CarPartData GetRequiredPartData()
+    {
+        return carPartsDatabase.carParts.Find(p => p.partType.ToString() == requiredPartType);
+    }
+
+    
     private IEnumerator RepairCoroutine()
     {
         IUpgradeService upgradeService = UpgradeService.Instance;
@@ -153,7 +159,6 @@ public class Car : MonoBehaviour
             yield break;
         }
 
-        Debug.Log(upgradeService.GetProfitMultiplier());
         int adjustedReward = Mathf.RoundToInt(Random.Range(requiredPart.purchaseCost, requiredPart.repairReward) * upgradeService.GetProfitMultiplier());
         FindObjectOfType<GameManager>().AddMoney(adjustedReward);
         SoundEffectsManager.Instance.PlaySound("Money");

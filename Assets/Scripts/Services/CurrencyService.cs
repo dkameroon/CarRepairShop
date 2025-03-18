@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class CurrencyService : ICurrencyService
 {
     private int _money;
@@ -41,6 +43,7 @@ public class CurrencyService : ICurrencyService
     public void AddFragments(int amount)
     {
         _fragments += amount;
+        Debug.Log($"Fragments updated : " +_fragments);
         GameData.Instance.SaveFragments(_fragments);
     }
 }

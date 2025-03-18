@@ -34,6 +34,7 @@ public class UpgradeData
 public enum UpgradeType
 {
     BuyLift,
+    HireMechanic,
     IncreaseRepairSpeed,
     IncreaseProfit
 }

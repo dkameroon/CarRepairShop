@@ -57,11 +57,46 @@ public class Lift : MonoBehaviour, ILift
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Car"))
+        if (other.CompareTag("Car") && !IsOccupied)
         {
             IsOccupied = true;
+            _currentCar = other.GetComponent<Car>();
+
+            if (_currentCar != null)
+            {
+                var requiredPart = _currentCar.GetRequiredPartData();
+                if (Inventory.Instance.HasPart(requiredPart.partType))
+                {
+                    AssignMechanicToLift();
+                }
+                else
+                {
+                    Debug.Log("Не хватает нужной детали!");
+                    RepairQueueManager.Instance.AddToQueue(requiredPart.partType, this);
+                    ShowMessageBox(requiredPart);
+                }
+            }
         }
     }
+
+    private Mechanic AssignMechanicToLift()
+    {
+        var mechanics = FindObjectsOfType<Mechanic>();
+        Debug.Log(mechanics.Length);
+        foreach (var mechanic in mechanics)
+        {
+            if (!mechanic.IsBusy)
+            {
+                mechanic.MoveToLift(this);
+                return mechanic;
+            }
+        }
+
+        Debug.LogWarning("🚧 No!");
+        return null;
+    }
+
+
     
     private void ShowMoneyPopup(int amount, Vector3 liftPosition)
     {
@@ -111,6 +146,11 @@ public class Lift : MonoBehaviour, ILift
     {
         return transform.position;
     }
+    
+    public Vector3 GetForwardPosition()
+    {
+        return transform.forward;
+    }
 
     public Quaternion GetRotation()
     {
@@ -124,10 +164,11 @@ public class Lift : MonoBehaviour, ILift
 
     public void StartRepair(CarPartData part, float repairTime)
     {
+        var assignMechanicToLift = AssignMechanicToLift();
         liftCanvas.SetActive(true);
         messageBox.SetActive(false);
         progressBar.gameObject.SetActive(true);
-        StartCoroutine(RepairCoroutine(part, repairTime));
+        StartCoroutine(RepairCoroutine(part, repairTime, assignMechanicToLift));
     }
 
     public void ShowMessageBox(CarPartData part)
@@ -162,7 +203,7 @@ public class Lift : MonoBehaviour, ILift
         messageBox.SetActive(false);
     }
 
-    private IEnumerator RepairCoroutine(CarPartData part, float repairTime)
+    private IEnumerator RepairCoroutine(CarPartData part, float repairTime, Mechanic mechanic)
     {
         IUpgradeService upgradeService = UpgradeService.Instance;
         progressBar.gameObject.SetActive(true);
@@ -181,5 +222,6 @@ public class Lift : MonoBehaviour, ILift
         ShowMoneyPopup(adjustedReward, transform.position);
 
         RepairQueueManager.Instance.RemoveFromQueue(part.partType, this);
+        mechanic.MoveToSpawn();
     }
 }
