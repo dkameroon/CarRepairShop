@@ -4,7 +4,20 @@ using UnityEngine;
 
 public static class SaveSystem
 {
-    private static string savePath = Application.dataPath + "/save.json";
+    private static string savePath;
+
+    static SaveSystem()
+    {
+#if UNITY_ANDROID
+        savePath = Path.Combine(Application.persistentDataPath, "save.json");
+#else
+        savePath = Path.Combine(Application.dataPath, "save.json");
+#endif
+        
+#if UNITY_EDITOR
+        savePath = Path.Combine(Application.dataPath, "save.json");
+#endif
+    }
 
     public static void Save(GameData data)
     {
@@ -18,7 +31,7 @@ public static class SaveSystem
         {
             Debug.LogWarning("⚠ Save file not found! Creating a new one...");
 
-            GameData newGameData = new GameData(10000,0, 1, 1,new List<SaveData>(), new List<InventoryItemSaveData>());
+            GameData newGameData = new GameData(10000,1000, 1, 1,new List<SaveData>(), new List<InventoryItemSaveData>());
 
             Save(newGameData);
 

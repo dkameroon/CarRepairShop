@@ -82,7 +82,6 @@ public class Lift : MonoBehaviour, ILift
     private Mechanic AssignMechanicToLift()
     {
         var mechanics = FindObjectsOfType<Mechanic>();
-        Debug.Log(mechanics.Length);
         foreach (var mechanic in mechanics)
         {
             if (!mechanic.IsBusy)

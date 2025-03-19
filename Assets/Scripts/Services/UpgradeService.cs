@@ -31,12 +31,12 @@ public class UpgradeService : IUpgradeService
     
     private float CalculateRepairSpeedMultiplier(int level)
     {
-        return Mathf.Pow(1.1f, level);
+        return Mathf.Pow(1.3f, level);
     }
 
     private float CalculateProfitMultiplier(int level)
     {
-        return Mathf.Pow(1.2f, level);
+        return Mathf.Pow(1.1f, level);
     }
 
     public void SetUpgradeUI(UpgradeUI upgradeUI)
@@ -96,11 +96,11 @@ public class UpgradeService : IUpgradeService
                 _mechanicService.BuyAndSpawnMechanic(upgrade.GetCurrentCost(GameData.Instance.GetUpgradeSaveData(upgrade.upgradeType).currentLevel));
                 break;
             case UpgradeType.IncreaseRepairSpeed:
-                repairSpeedMultiplier *= 1.1f;
+                repairSpeedMultiplier *= 1.3f;
                 break;
 
             case UpgradeType.IncreaseProfit:
-                profitMultiplier *= 1.2f;
+                profitMultiplier *= 1.1f;
                 break;
         }
     }

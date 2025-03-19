@@ -14517,7 +14517,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicTracks:
   - {fileID: 8300000, guid: f7550f2a091ddac4a8c1ac413f08ed46, type: 3}
-  musicVolume: 1
+  - {fileID: 8300000, guid: efc6b81138478ca47a79baf79b691bfb, type: 3}
+  - {fileID: 8300000, guid: 1fb957a74a217a54c9ec6ae20898b42a, type: 3}
+  musicVolume: 0.5
 --- !u!82 &1844693261
 AudioSource:
   m_ObjectHideFlags: 0
