@@ -15,11 +15,11 @@ public class GameData
     public float SoundVolume;
    
 
-    public GameData(int money, int Fragments, int liftsPurchased, int mechanicsHired,  List<SaveData> upgrades, List<InventoryItemSaveData> inventory)
+    public GameData(int money, int fragments, int liftsPurchased, int mechanicsHired,  List<SaveData> upgrades, List<InventoryItemSaveData> inventory)
     {
         Instance = this;
         Money = money;
-        Fragments = Fragments;
+        Fragments = fragments;
         LiftsPurchased = liftsPurchased;
         MechanicsHired = mechanicsHired;
         if (upgrades == null || upgrades.Count == 0)
