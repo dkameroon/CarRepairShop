@@ -72,7 +72,7 @@ public class Car : MonoBehaviour
     {
         Vector3 drivePastDestination = transform.position + transform.forward * 100;
         _agent.SetDestination(drivePastDestination);
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, 15f);
     }
 
     private void OnTriggerEnter(Collider other)

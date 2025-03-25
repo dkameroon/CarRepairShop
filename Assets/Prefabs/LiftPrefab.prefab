@@ -112,9 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09feeb6d458f8e145ada343cc74683eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _liftCanvasPrefab: {fileID: 3907283112244491521, guid: 9b03b02758f58234da1b76b34aae1f87, type: 3}
-  _moneyPopupPrefab: {fileID: 1970520504427498507, guid: 43d31e85e4ec06f46bc6f46193e1cd33, type: 3}
-  _fragmentsPopupPrefab: {fileID: 8442019023062378195, guid: 06846ee3b73ad874ca15dcc2548e0ff6, type: 3}
+  _liftCanvasPrefab: {fileID: 3907283112244491521, guid: a2655b285fbaa264d9cf94d29e474b05, type: 3}
+  _moneyPopupPrefab: {fileID: 1970520504427498507, guid: 396cf194395e33b48bd49a6b05c2c9b5, type: 3}
+  _fragmentsPopupPrefab: {fileID: 8442019023062378195, guid: 4a2465a8d13c62b43a41981bff516e2c, type: 3}
 --- !u!65 &-7477765040113043698
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -39,15 +39,11 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
 
     private void ToggleInventory()
     {
-        
         _isInventoryOpen = !_isInventoryOpen;
         inventoryPanel.SetActive(_isInventoryOpen);
-
-        if (_isInventoryOpen)
-        {
-            UpdateInventoryUI();
-        }
+        if (_isInventoryOpen) { UpdateInventoryUI(); }
     }
+
 
     private void CloseInventory()
     {

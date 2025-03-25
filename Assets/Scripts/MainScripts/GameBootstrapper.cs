@@ -7,6 +7,7 @@ public class GameBootstrapper : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject _liftPrefab;
     [SerializeField] private GameObject _mechanicPrefab;
+
     [Header("Scripts and Databases")]
     [SerializeField] private UpgradesDatabase _upgradesDatabase;
     [SerializeField] private GameManager _gameManager;
@@ -67,5 +68,6 @@ public class GameBootstrapper : MonoBehaviour
     {
         return _inventory;
     }
+    
 }
 

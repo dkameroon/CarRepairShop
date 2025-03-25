@@ -140,7 +140,16 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 0.1
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 11400000, guid: 9219bf1ab6920364cb3ebefb72804734, type: 2}
+  - {fileID: 11400000, guid: 8180511da9aab6d4186f742c1e963f51, type: 2}
+  - {fileID: 11400000, guid: 15a0737b77701f842b55c58904240d3f, type: 2}
+  - {fileID: 11400000, guid: dba33061f019574448e38d1f183071f7, type: 2}
+  - {fileID: 8442019023062378195, guid: 82a7fcce46bd0064b9f9b5c369489927, type: 3}
+  - {fileID: 3907283112244491521, guid: 00b967ba2546342469b1be3acea12188, type: 3}
+  - {fileID: 4905495614681662643, guid: b1bd702471de9624c98a4ef88ec4e063, type: 3}
+  - {fileID: 1970520504427498507, guid: 565288f47cab0604981ad986c4433e22, type: 3}
+  - {fileID: 7443751188401922388, guid: ff35a81066ce4bc4596af3c354ab34a1, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -161,7 +170,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.CarRepairShop
+    Android: com.DKameroon.CarRepairShop
   buildNumber:
     Standalone: 0
     VisionOS: 0
