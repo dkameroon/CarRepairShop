@@ -1,0 +1,56 @@
+{
+    "Money": 4873,
+    "Fragments": 1041,
+    "LiftsPurchased": 6,
+    "MechanicsHired": 6,
+    "upgrades": [
+        {
+            "upgradeType": 3,
+            "currentLevel": 0
+        },
+        {
+            "upgradeType": 2,
+            "currentLevel": 5
+        },
+        {
+            "upgradeType": 1,
+            "currentLevel": 5
+        },
+        {
+            "upgradeType": 0,
+            "currentLevel": 5
+        }
+    ],
+    "inventory": [
+        {
+            "partType": 5,
+            "count": 0
+        },
+        {
+            "partType": 0,
+            "count": 0
+        },
+        {
+            "partType": 1,
+            "count": 0
+        },
+        {
+            "partType": 4,
+            "count": 0
+        },
+        {
+            "partType": 2,
+            "count": 0
+        },
+        {
+            "partType": 6,
+            "count": 0
+        },
+        {
+            "partType": 3,
+            "count": 0
+        }
+    ],
+    "MusicVolume": 0.0,
+    "SoundVolume": 0.5
+}

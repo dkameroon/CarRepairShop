@@ -443,7 +443,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.499309, y: 1.6127295, z: 5.234738}
+  m_Size: {x: 2.499309, y: 1.6127295, z: 5.5}
   m_Center: {x: -0.000011026859, y: 1.1799194, z: 0.015680313}
 --- !u!195 &-349905966120832934
 NavMeshAgent:
@@ -500,9 +500,9 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0

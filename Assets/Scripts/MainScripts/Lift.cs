@@ -205,11 +205,12 @@ public class Lift : MonoBehaviour, ILift
     private IEnumerator RepairCoroutine(CarPartData part, float repairTime, Mechanic mechanic)
     {
         IUpgradeService upgradeService = UpgradeService.Instance;
+        float adjustedRepairTime = part.repairTime / upgradeService.GetRepairSpeedMultiplier();
         progressBar.gameObject.SetActive(true);
 
-        for (float timer = 0; timer < repairTime; timer += Time.deltaTime)
+        for (float timer = 0; timer < adjustedRepairTime; timer += Time.deltaTime)
         {
-            float progress = timer / repairTime;
+            float progress = timer / adjustedRepairTime;
             progressBar.value = progress;
             yield return null;
         }

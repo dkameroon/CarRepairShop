@@ -19,12 +19,12 @@ public class MechanicService : IMechanicService
 
         _mechanicPositions = new List<Vector3>
         {
-            new Vector3(-23f, 2f,-12.5f),
-            new Vector3(-20f, 2f,-10f),
-            new Vector3(-20f, 2f,-15f),
-            new Vector3(-15f, 2f,-10f),
-            new Vector3(-15f, 2f,-15f),
-            new Vector3(-12.5f, 2f,-12.5f)
+            new Vector3(-24f, 0f,-6f),
+            new Vector3(-21f, 0f,-6f),
+            new Vector3(-18f, 0f,-6f),
+            new Vector3(-15f, 0f,-6f),
+            new Vector3(-12f, 0f,-6f),
+            new Vector3(-29f, 0f,-10f)
         };
 
         _mechanicRotations = new List<Quaternion>
