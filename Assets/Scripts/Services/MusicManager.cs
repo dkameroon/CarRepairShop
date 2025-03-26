@@ -8,7 +8,7 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private AudioClip[] musicTracks;
 
     [Header("Volume Settings")]
-    [Range(0f, 1f)] public float musicVolume = 1f;
+    [Range(0f, 1f)] public float musicVolume = 0.2f;
 
     private AudioSource musicSource;
 
@@ -140,4 +140,3 @@ public class MusicManager : MonoBehaviour
         return trackIndex >= 0 && trackIndex < musicTracks.Length;
     }
 }
-

@@ -16,24 +16,24 @@ MonoBehaviour:
   - upgradeName: Buy Lift
     icon: {fileID: 21300000, guid: 87f2795ee8fda564199127f111631393, type: 3}
     baseCost: 100
-    costIncreaseCoefficient: 1.2
+    costIncreaseCoefficient: 1.7
     maxLevel: 5
     upgradeType: 0
   - upgradeName: Hire Mechanic
     icon: {fileID: 21300000, guid: 26dfc094f25e03e459d344840b791c83, type: 3}
     baseCost: 150
-    costIncreaseCoefficient: 1.5
+    costIncreaseCoefficient: 1.7
     maxLevel: 5
     upgradeType: 1
   - upgradeName: Increase Repair Speed
     icon: {fileID: 21300000, guid: 823c560813ffcff488a708543c483845, type: 3}
-    baseCost: 50
-    costIncreaseCoefficient: 1.2
+    baseCost: 150
+    costIncreaseCoefficient: 1.7
     maxLevel: 5
     upgradeType: 2
   - upgradeName: Increase Profit
     icon: {fileID: 21300000, guid: cd40e085c642ea240a3b0951e2709d3f, type: 3}
-    baseCost: 150
-    costIncreaseCoefficient: 1.5
+    baseCost: 250
+    costIncreaseCoefficient: 1.7
     maxLevel: 5
     upgradeType: 3

@@ -32,7 +32,7 @@ public class CraftingSystem : ICraftingSystem
             OnCraftingFailed?.Invoke();
             return false;
         }
-
+        SoundEffectsManager.Instance.PlaySound("CraftingSound");
         _inventory.AddItem(part, 1);
         OnCraftingSuccess?.Invoke();
         return true;

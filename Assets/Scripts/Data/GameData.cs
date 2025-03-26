@@ -54,7 +54,7 @@ public class GameData
         {
             this.inventory = new List<InventoryItemSaveData>(inventory);
         }
-        MusicVolume = 0.5f;
+        MusicVolume = 0.2f;
         SoundVolume = 0.5f;
     }
     

@@ -109,6 +109,7 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     
     private void PurchaseItem(CarPartData partData)
     {
+        SoundEffectsManager.Instance.PlaySound("BuySound");
         if (_gameManager.SpendMoney(partData.purchaseCost))
         {
             _inventory.AddItem(partData.partType, 1);

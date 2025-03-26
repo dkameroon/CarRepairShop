@@ -14,7 +14,7 @@ public class UpgradeData
     public string upgradeName;
     public Sprite icon;
     public int baseCost;
-    public float costIncreaseCoefficient = 1.2f;
+    public float costIncreaseCoefficient = 1.7f;
     public int maxLevel;
     public UpgradeType upgradeType;
 

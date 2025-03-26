@@ -46,6 +46,7 @@ public class UpgradeService : IUpgradeService
 
     public void PurchaseUpgrade(UpgradeData upgrade)
     {
+        SoundEffectsManager.Instance.PlaySound("UpgradeSound");
         if (upgrade == null)
         {
             Debug.LogError("UpgradeData is null!");

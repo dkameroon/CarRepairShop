@@ -69,37 +69,46 @@ public class UpgradeUI : MonoBehaviour
     private void CreateUpgradeItemUI(UpgradeData upgrade)
     {
         var upgradeItem = Instantiate(upgradeItemTemplate, upgradeContent);
-        upgradeItem.SetActive(true);
+        upgradeItem.SetActive(false);
 
         TextMeshProUGUI[] textComponents = upgradeItem.GetComponentsInChildren<TextMeshProUGUI>();
         Button purchaseButton = upgradeItem.GetComponentInChildren<Button>();
         Image iconImage = upgradeItem.GetComponentInChildren<Image>();
+        TextMeshProUGUI buttonText = purchaseButton.GetComponentInChildren<TextMeshProUGUI>();
 
+        int currentLevel = GameData.Instance.GetUpgradeSaveData(upgrade.upgradeType).currentLevel;
+    
         if (textComponents.Length >= 2)
         {
             textComponents[0].text = upgrade.upgradeName;
-            textComponents[1].text = $"Cost: {upgrade.GetCurrentCost(GameData.Instance.GetUpgradeSaveData(upgrade.upgradeType).currentLevel)} \n (Level: {GameData.Instance.GetUpgradeSaveData(upgrade.upgradeType).currentLevel})";
+            textComponents[1].text = $"Cost: {upgrade.GetCurrentCost(currentLevel)} \n (Level: {currentLevel})";
         }
-        
+
         if (iconImage != null)
         {
             iconImage.sprite = upgrade.icon;
         }
 
-
-        if (upgrade.upgradeName == "Lift" && _liftService.AllLiftsPurchased())
+        if (purchaseButton != null)
         {
-            if (purchaseButton != null)
+            purchaseButton.onClick.RemoveAllListeners();
+
+            if (currentLevel >= upgrade.maxLevel) 
             {
                 purchaseButton.interactable = false;
-                purchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = "Max upgrade"; 
+                buttonText.text = "Max"; 
+            }
+            else
+            {
+                purchaseButton.interactable = true;
+                buttonText.text = "Buy"; 
+                purchaseButton.onClick.AddListener(() => _upgradeService.PurchaseUpgrade(upgrade));
             }
         }
-        else if (purchaseButton != null)
-        {
-            purchaseButton.onClick.AddListener(() => _upgradeService.PurchaseUpgrade(upgrade));
-        }
+
+        upgradeItem.SetActive(true);
     }
+
 
 
     private void UpdateMoneyUI()

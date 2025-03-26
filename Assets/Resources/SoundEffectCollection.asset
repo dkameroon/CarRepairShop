@@ -15,3 +15,9 @@ MonoBehaviour:
   sounds:
   - soundName: Money
     audioClip: {fileID: 8300000, guid: cc07da32ca84adb47a3022b96d705358, type: 3}
+  - soundName: BuySound
+    audioClip: {fileID: 8300000, guid: cb79ace10b8b5de408e869ded8f1654d, type: 3}
+  - soundName: UpgradeSound
+    audioClip: {fileID: 8300000, guid: aa89553892aa00f40ace7ba15aac0de2, type: 3}
+  - soundName: CraftingSound
+    audioClip: {fileID: 8300000, guid: 9ef0f4895fd0b0c4e9756f0d2d6c7ad0, type: 3}
