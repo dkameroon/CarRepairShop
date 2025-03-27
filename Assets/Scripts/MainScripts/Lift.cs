@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 public class Lift : MonoBehaviour, ILift
 {
     public bool IsOccupied { get; private set; } = false;
+    public bool IsReserved { get; private set; } = false;
     private GameObject _liftObject;
     public CarParts RepairedPart { get; private set; }
 
@@ -25,6 +26,9 @@ public class Lift : MonoBehaviour, ILift
     private GameManager _gameManager;
     private Car _currentCar;
     
+    private IInventory _inventory;
+    
+    
     
     public Lift(GameObject liftObject, CarParts repairedPart)
     {
@@ -35,10 +39,12 @@ public class Lift : MonoBehaviour, ILift
     private void Awake()
     {
         _gameManager = FindObjectOfType<GameManager>();
+        
     }
 
     private void Start()
     {
+        _inventory = GameBootstrapper.instance.GetInventory();
         liftCanvas = Instantiate(_liftCanvasPrefab, transform.position + Vector3.up * 10f, Quaternion.Euler(45f, -90f, 0f));
         progressBar = liftCanvas.transform.Find("ProgressBar").GetComponent<Slider>();
         messageBox = liftCanvas.transform.Find("MessageBox").gameObject;
@@ -57,7 +63,7 @@ public class Lift : MonoBehaviour, ILift
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Car") && !IsOccupied)
+        if (other.CompareTag("Car") && !IsOccupied || other.CompareTag("Car") && IsReserved)
         {
             IsOccupied = true;
             _currentCar = other.GetComponent<Car>();
@@ -65,7 +71,7 @@ public class Lift : MonoBehaviour, ILift
             if (_currentCar != null)
             {
                 var requiredPart = _currentCar.GetRequiredPartData();
-                if (Inventory.Instance.HasPart(requiredPart.partType))
+                if (_inventory.HasPart(requiredPart.partType))
                 {
                     AssignMechanicToLift();
                 }
@@ -161,13 +167,65 @@ public class Lift : MonoBehaviour, ILift
         IsOccupied = occupied;
     }
 
+    public void SetReserved(bool reserved)
+    {
+        IsReserved = reserved;
+    }
+    
     public void StartRepair(CarPartData part, float repairTime)
     {
-        var assignMechanicToLift = AssignMechanicToLift();
+        var assignedMechanic = AssignMechanicToLift();
+        if (assignedMechanic == null) 
+        {
+            Debug.LogWarning("Немає доступних механіків для ремонту!");
+            return;
+        }
+    
         liftCanvas.SetActive(true);
         messageBox.SetActive(false);
         progressBar.gameObject.SetActive(true);
-        StartCoroutine(RepairCoroutine(part, repairTime, assignMechanicToLift));
+    
+        StartCoroutine(RepairCoroutine(part, repairTime, assignedMechanic));
+    }
+
+    private IEnumerator RepairCoroutine(CarPartData part, float repairTime, Mechanic mechanic)
+    {
+        IUpgradeService upgradeService = UpgradeService.Instance;
+        float adjustedRepairTime = part.repairTime / upgradeService.GetRepairSpeedMultiplier();
+        progressBar.gameObject.SetActive(true);
+
+        for (float timer = 0; timer < adjustedRepairTime; timer += Time.deltaTime)
+        {
+            float progress = timer / adjustedRepairTime;
+            progressBar.value = progress;
+            yield return null;
+        }
+
+        progressBar.gameObject.SetActive(false);
+        IsOccupied = false;
+        IsReserved = false;
+
+        int adjustedReward = Mathf.RoundToInt(Random.Range(part.purchaseCost, part.repairReward) * upgradeService.GetProfitMultiplier());
+        ShowMoneyPopup(adjustedReward, transform.position);
+        FindObjectOfType<GameManager>().AddMoney(adjustedReward);
+        RepairQueueManager.Instance.RemoveFromQueue(part.partType, this);
+        mechanic.MoveToSpawn();
+        SoundEffectsManager.Instance.PlaySound("Money");
+        DropFragments();
+        StartCoroutine(_currentCar.GoToFinish());
+    }
+    
+    private void DropFragments()
+    {
+        float chance = Random.Range(0f, 1f);
+
+        if (chance < 0.5f)
+        {
+            int fragmentsAmount = Random.Range(1, 5);
+            FindObjectOfType<GameManager>().AddFragments(fragmentsAmount);
+            Debug.Log($"Отримано {fragmentsAmount} фрагментів!");
+            ShowFragmentsPopup(fragmentsAmount, GetPosition());
+        }
     }
 
     public void ShowMessageBox(CarPartData part)
@@ -202,26 +260,5 @@ public class Lift : MonoBehaviour, ILift
         messageBox.SetActive(false);
     }
 
-    private IEnumerator RepairCoroutine(CarPartData part, float repairTime, Mechanic mechanic)
-    {
-        IUpgradeService upgradeService = UpgradeService.Instance;
-        float adjustedRepairTime = part.repairTime / upgradeService.GetRepairSpeedMultiplier();
-        progressBar.gameObject.SetActive(true);
-
-        for (float timer = 0; timer < adjustedRepairTime; timer += Time.deltaTime)
-        {
-            float progress = timer / adjustedRepairTime;
-            progressBar.value = progress;
-            yield return null;
-        }
-
-        progressBar.gameObject.SetActive(false);
-        IsOccupied = false;
-
-        int adjustedReward = Mathf.RoundToInt(Random.Range(part.purchaseCost, part.repairReward) * upgradeService.GetProfitMultiplier());
-        ShowMoneyPopup(adjustedReward, transform.position);
-
-        RepairQueueManager.Instance.RemoveFromQueue(part.partType, this);
-        mechanic.MoveToSpawn();
-    }
+    
 }

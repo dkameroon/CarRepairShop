@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Object = UnityEngine.Object;
 
 public class MechanicService : IMechanicService
 {
+    public static MechanicService Instance { get; private set; }
+    
     private IGameManager _gameManager;
     private GameObject _mechanicPrefab;
     private List<IMechanic> _mechanics = new List<IMechanic>();
@@ -14,6 +18,7 @@ public class MechanicService : IMechanicService
 
     public MechanicService(IGameManager gameManager, GameObject mechanicPrefab)
     {
+        
         _gameManager = gameManager;
         _mechanicPrefab = mechanicPrefab;
 
@@ -40,6 +45,7 @@ public class MechanicService : IMechanicService
         LoadMechanics();
     }
 
+    
     private void LoadMechanics()
     {
         int purchasedMechanics = SaveSystem.Load().MechanicsHired;
@@ -55,7 +61,6 @@ public class MechanicService : IMechanicService
         _nextMechanicIndex = purchasedMechanics;
     }
 
-    
     public IMechanic GetAvailableMechanic()
     {
         foreach (var mechanic in _mechanics)
@@ -68,6 +73,14 @@ public class MechanicService : IMechanicService
         return null;
     }
 
+    public void AssignMechanicToLift(ILift lift)
+    {
+        IMechanic availableMechanic = GetAvailableMechanic();
+        if (availableMechanic != null && !lift.IsOccupied)
+        {
+            availableMechanic.MoveToLift(lift);
+        }
+    }
 
     public void BuyAndSpawnMechanic(int mechanicCost)
     {
@@ -82,7 +95,6 @@ public class MechanicService : IMechanicService
             _gameManager.SpendMoney(mechanicCost);
             GameObject mechanic = Object.Instantiate(_mechanicPrefab, _mechanicPositions[_nextMechanicIndex], _mechanicRotations[_nextMechanicIndex]);
             _mechanics.Add(mechanic.GetComponent<IMechanic>());
-
             _nextMechanicIndex++;
             GameData.Instance.MechanicsHired = _nextMechanicIndex;
             GameData.Instance.Save();
@@ -97,6 +109,7 @@ public class MechanicService : IMechanicService
     {
         _mechanics.Add(mechanic);
     }
+
     public bool AllMechanicsHired()
     {
         return _nextMechanicIndex >= _mechanicPositions.Count;

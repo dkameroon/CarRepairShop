@@ -53,14 +53,14 @@ public class Car : MonoBehaviour
 
     public void SetDestination(ILift targetLift)
     {
-        if (targetLift == null || targetLift.IsOccupied)
+        if (targetLift == null || targetLift.IsReserved)
         {
             DrivePast();
             return;
         }
         _targetLift = targetLift;
         _agent.SetDestination(_targetLift.GetPosition());
-        _targetLift.SetOccupied(true);
+        _targetLift.SetReserved(true);
     }
 
     public void SetDestination(Vector3 targetPosition)
@@ -176,6 +176,21 @@ public class Car : MonoBehaviour
         Destroy(gameObject);
 }
 
+
+    public IEnumerator GoToFinish()
+    {
+        _agent.enabled = true;
+        _isRepaired = true;
+        transform.Rotate(0f, 180f, 0f);
+        _agent.SetDestination(finishPosition);
+        if (_isRepaired)
+        {
+            _targetLift.SetOccupied(false);
+        }
+
+        yield return new WaitForSeconds(10f);
+        Destroy(gameObject);
+    }
     private void DropFragments()
     {
         float chance = Random.Range(0f, 1f);

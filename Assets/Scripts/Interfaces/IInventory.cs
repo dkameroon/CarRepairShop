@@ -6,4 +6,6 @@ public interface IInventory
     void AddItem(CarParts part, int count);
     bool HasItem(CarParts part, int count);
     float GetRepairTime(CarParts part);
+
+    bool HasPart(CarParts part);
 }

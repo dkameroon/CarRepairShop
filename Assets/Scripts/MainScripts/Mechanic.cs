@@ -10,6 +10,8 @@ public class Mechanic : MonoBehaviour, IMechanic
     private Animator animator;
     public bool IsBusy { get; private set; } 
     
+    private IInventory _inventory;
+    
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -18,7 +20,12 @@ public class Mechanic : MonoBehaviour, IMechanic
         
         _agent.stoppingDistance = 0.5f;
     }
-    
+
+    private void Start()
+    {
+        _inventory = GameBootstrapper.instance.GetInventory();
+    }
+
     private void Update()
     {
         if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
@@ -27,6 +34,7 @@ public class Mechanic : MonoBehaviour, IMechanic
             animator.SetBool("IsWalking", false);
         }
     }
+    
 
 
     public void MoveToLift(ILift lift)
@@ -74,10 +82,10 @@ public class Mechanic : MonoBehaviour, IMechanic
         {
             var requiredPart = car.GetRequiredPartData();
 
-            if (Inventory.Instance.HasPart(requiredPart.partType))
+            if (_inventory.HasPart(requiredPart.partType))
             {
                 lift.StartRepair(requiredPart, requiredPart.repairTime);
-                Inventory.Instance.RemoveItem(requiredPart.partType, 1);
+                _inventory.RemoveItem(requiredPart.partType, 1);
                 MoveToSpawn();
             }
             else

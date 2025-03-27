@@ -18,9 +18,6 @@ public class GameManager : MonoBehaviour, IGameManager
 
     private UIManager _uiManager;
 
-    private float _spawnInterval = 20f;
-    private float _nextSpawnTime = 0f;
-
     private void Awake()
     {
         _mechanicService = new MechanicService(this, FindObjectOfType<GameBootstrapper>().MechanicPrefab);

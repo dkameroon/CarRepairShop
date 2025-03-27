@@ -6,6 +6,8 @@ public interface ILift
     Vector3 GetForwardPosition();
     Quaternion GetRotation();
     bool IsOccupied { get; }
+    bool IsReserved { get; }
+    void SetReserved(bool reserved);
     void SetOccupied(bool state);
     GameObject GetGameObject();
     CarParts RepairedPart { get; }
