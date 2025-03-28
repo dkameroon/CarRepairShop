@@ -34,6 +34,16 @@ public class CraftingSystem : ICraftingSystem
         }
         SoundEffectsManager.Instance.PlaySound("CraftingSound");
         _inventory.AddItem(part, 1);
+        
+        if (RepairQueueManager.Instance.HasPendingRepairs(craftableItem.partType))
+        {
+            ILift nextLift = RepairQueueManager.Instance.GetNextLift(craftableItem.partType);
+            if (nextLift != null)
+            {
+                nextLift.AssignMechanicToLift();
+            }
+        }
+        
         OnCraftingSuccess?.Invoke();
         return true;
     }

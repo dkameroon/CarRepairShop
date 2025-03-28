@@ -113,7 +113,12 @@ public class CraftingUI : MonoBehaviour
     {
         if (_craftingSystem.TryCraft(carPart))
         {
+            UIManager.Instance.ShowNotification($"Part {carPart.ToString()} \n successfully crafted");
             UpdateCraftingUI();
+        }
+        else
+        {
+            UIManager.Instance.ShowNotification("Not enough fragments!");
         }
     }
 

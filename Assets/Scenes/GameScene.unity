@@ -796,7 +796,6 @@ Transform:
   - {fileID: 185552905}
   - {fileID: 1844693259}
   - {fileID: 346050414}
-  - {fileID: 1625925556}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &89890246 stripped
@@ -7898,7 +7897,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.00024414062}
-  m_SizeDelta: {x: 0, y: -1152.0917}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1007987190
 MonoBehaviour:
@@ -8497,6 +8496,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moneyText: {fileID: 33134906}
   _fragmentsText: {fileID: 509750311}
+  notificationPopupPrefab: {fileID: 1970520504427498507, guid: c8d5efc0ae9b64e489087b064e4e4fd2, type: 3}
 --- !u!4 &1081210893
 Transform:
   m_ObjectHideFlags: 0
@@ -8532,6 +8532,8 @@ MonoBehaviour:
   moneyText: {fileID: 33134906}
   carPartsDatabase: {fileID: 11400000, guid: 8cd09986c49f1eb45b3d51e1ead722c1, type: 2}
   progressBarPrefab: {fileID: 7443751188401922388, guid: f2a6d37c029fc2949aaacd44279584a7, type: 3}
+  notificationPopupPrefab: {fileID: 1970520504427498507, guid: c8d5efc0ae9b64e489087b064e4e4fd2, type: 3}
+  isNotificationActive: 0
 --- !u!114 &1081210895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12137,50 +12139,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608949819}
   m_CullTransparentMesh: 1
---- !u!1 &1625925555
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1625925556}
-  - component: {fileID: 1625925557}
-  m_Layer: 0
-  m_Name: MechanicManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1625925556
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1625925555}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 85610289}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1625925557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1625925555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cd3eb9d13bc05c48a4af35facf099d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1660066408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12594,7 +12552,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1692259646
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14356,7 +14314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8349679495529208548, guid: 11d5d0d6d60bccb49b7071e25948a000, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8349679495529208548, guid: 11d5d0d6d60bccb49b7071e25948a000, type: 3}
       propertyPath: m_AnchorMin.x
@@ -14364,7 +14322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8349679495529208548, guid: 11d5d0d6d60bccb49b7071e25948a000, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8349679495529208548, guid: 11d5d0d6d60bccb49b7071e25948a000, type: 3}
       propertyPath: m_SizeDelta.x
@@ -14404,11 +14362,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8349679495529208548, guid: 11d5d0d6d60bccb49b7071e25948a000, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 859.7542
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8349679495529208548, guid: 11d5d0d6d60bccb49b7071e25948a000, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -237.68
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8349679495529208548, guid: 11d5d0d6d60bccb49b7071e25948a000, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

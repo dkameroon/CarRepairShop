@@ -15,7 +15,7 @@ MonoBehaviour:
   craftableItems:
   - partType: 0
     itemName: Engine
-    requiredFragments: 5
+    requiredFragments: 20
     itemIcon: {fileID: 21300000, guid: af18f7a9cd975ff4ea0ab4b1df40d85c, type: 3}
   - partType: 1
     itemName: Brakes
@@ -23,19 +23,19 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: 28d1b1712578f66489075f51b610ed17, type: 3}
   - partType: 2
     itemName: Transmission
-    requiredFragments: 5
+    requiredFragments: 10
     itemIcon: {fileID: 21300000, guid: 374a6f8a100d9ef4ba640dd06e3fec7f, type: 3}
   - partType: 3
     itemName: Exhaust
-    requiredFragments: 5
+    requiredFragments: 10
     itemIcon: {fileID: 21300000, guid: 1c47c857ff9a0244d83afde0dd406f48, type: 3}
   - partType: 4
     itemName: Radiator
-    requiredFragments: 5
+    requiredFragments: 15
     itemIcon: {fileID: 21300000, guid: 6274f6a0c225b164db054ecf174ee6f2, type: 3}
   - partType: 5
     itemName: Battery
-    requiredFragments: 5
+    requiredFragments: 14
     itemIcon: {fileID: 21300000, guid: b4b3e390c04985642a0e9015b0bd2830, type: 3}
   - partType: 6
     itemName: EngineOil

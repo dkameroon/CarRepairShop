@@ -28,7 +28,7 @@ public class Lift : MonoBehaviour, ILift
     
     private IInventory _inventory;
     
-    
+    public bool IsRepairInProgress { get; private set; } = false;
     
     public Lift(GameObject liftObject, CarParts repairedPart)
     {
@@ -44,6 +44,8 @@ public class Lift : MonoBehaviour, ILift
 
     private void Start()
     {
+        var mechanics = FindObjectsOfType<Mechanic>();
+        
         _inventory = GameBootstrapper.instance.GetInventory();
         liftCanvas = Instantiate(_liftCanvasPrefab, transform.position + Vector3.up * 10f, Quaternion.Euler(45f, -90f, 0f));
         progressBar = liftCanvas.transform.Find("ProgressBar").GetComponent<Slider>();
@@ -77,29 +79,53 @@ public class Lift : MonoBehaviour, ILift
                 }
                 else
                 {
-                    Debug.Log("Не хватает нужной детали!");
                     RepairQueueManager.Instance.AddToQueue(requiredPart.partType, this);
                     ShowMessageBox(requiredPart);
                 }
             }
         }
     }
-
-    private Mechanic AssignMechanicToLift()
+    
+    public bool NeedsRepair()
     {
+        return IsOccupied && _currentCar != null;
+    }
+
+    public void SetIsRepairInProgress(bool isRepairInProgress)
+    {
+        IsRepairInProgress = isRepairInProgress;
+    }
+
+
+    public IMechanic AssignMechanicToLift()
+    {
+        if (IsRepairInProgress)
+        {
+            Debug.Log("🚧 Ремонт уже в процессе!");
+            return null;
+        }
+
         var mechanics = FindObjectsOfType<Mechanic>();
+        bool foundAvailableMechanic = false;
+
         foreach (var mechanic in mechanics)
         {
             if (!mechanic.IsBusy)
             {
                 mechanic.MoveToLift(this);
+                foundAvailableMechanic = true;
                 return mechanic;
             }
         }
 
-        Debug.LogWarning("🚧 No!");
+        if (!foundAvailableMechanic)
+        {
+            Debug.LogWarning("🚧 Нет доступных механиков!");
+        }
+
         return null;
     }
+
 
 
     
@@ -174,24 +200,40 @@ public class Lift : MonoBehaviour, ILift
     
     public void StartRepair(CarPartData part, float repairTime)
     {
-        var assignedMechanic = AssignMechanicToLift();
-        if (assignedMechanic == null) 
-        {
-            Debug.LogWarning("Немає доступних механіків для ремонту!");
-            return;
-        }
-    
         liftCanvas.SetActive(true);
         messageBox.SetActive(false);
         progressBar.gameObject.SetActive(true);
+        IMechanic mechanic = AssignMechanicToLift();
+        StartCoroutine(RepairCoroutine(part, repairTime, mechanic));
+    }
     
-        StartCoroutine(RepairCoroutine(part, repairTime, assignedMechanic));
+    public void StartRepair(CarPartData part, float repairTime, IMechanic mechanic)
+    {
+        if (IsRepairInProgress) return;
+
+        IsRepairInProgress = true;
+        liftCanvas.SetActive(true);
+        messageBox.SetActive(false);
+        progressBar.gameObject.SetActive(true);
+
+        IInventoryUI inventoryUI = FindObjectOfType<InventoryUI>();
+        _inventory.RemoveItem(part.partType, 1);
+        inventoryUI.UpdateInventoryUI();
+
+        StartCoroutine(RepairCoroutine(part, repairTime, mechanic));
     }
 
-    private IEnumerator RepairCoroutine(CarPartData part, float repairTime, Mechanic mechanic)
+    private IEnumerator RepairCoroutine(CarPartData part, float repairTime, IMechanic mechanic)
     {
+        if (mechanic == null)
+        {
+            Debug.LogError("❌ Механик не найден для выполнения ремонта!");
+            yield break;
+        }
+
         IUpgradeService upgradeService = UpgradeService.Instance;
         float adjustedRepairTime = part.repairTime / upgradeService.GetRepairSpeedMultiplier();
+        liftCanvas.SetActive(true);
         progressBar.gameObject.SetActive(true);
 
         for (float timer = 0; timer < adjustedRepairTime; timer += Time.deltaTime)
@@ -209,11 +251,22 @@ public class Lift : MonoBehaviour, ILift
         ShowMoneyPopup(adjustedReward, transform.position);
         FindObjectOfType<GameManager>().AddMoney(adjustedReward);
         RepairQueueManager.Instance.RemoveFromQueue(part.partType, this);
-        mechanic.MoveToSpawn();
+
+        if (mechanic != null)
+        {
+            mechanic.CompleteRepair();
+        }
+        else
+        {
+            Debug.LogWarning("❌ Механик не завершил ремонт.");
+        }
+
         SoundEffectsManager.Instance.PlaySound("Money");
         DropFragments();
         StartCoroutine(_currentCar.GoToFinish());
     }
+
+
     
     private void DropFragments()
     {

@@ -17,6 +17,12 @@ public class MoneyPopup : MonoBehaviour
         popupText.text = $"+{amount}";
         animator.SetTrigger("Show");
     }
+    
+    public void ShowPopupText(string message)
+    {
+        popupText.text = $"{message}";
+        animator.SetTrigger("NotificationPopup");
+    }
 
     public void DestroyAfterAnimation()
     {

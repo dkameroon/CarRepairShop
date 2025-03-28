@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     
     [SerializeField] private GameObject progressBarPrefab;
     private GameObject progressBarInstance;
-
+  
     private IInventory _inventory;
     private GameManager _gameManager;
     private bool _isInventoryOpen = false;
@@ -71,6 +72,7 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     {
         return _inventory;
     }
+    
 
     private void CreateInventoryItemUI(CarPartData partData)
     {
@@ -109,31 +111,32 @@ public class InventoryUI : MonoBehaviour, IInventoryUI
     
     private void PurchaseItem(CarPartData partData)
     {
-        SoundEffectsManager.Instance.PlaySound("BuySound");
+        
+    
         if (_gameManager.SpendMoney(partData.purchaseCost))
         {
             _inventory.AddItem(partData.partType, 1);
+
             if (RepairQueueManager.Instance.HasPendingRepairs(partData.partType))
             {
                 ILift nextLift = RepairQueueManager.Instance.GetNextLift(partData.partType);
                 if (nextLift != null)
                 {
-                    Car car = nextLift.GetCurrentCar();
-                    if (car != null)
-                    {
-                        car.StartRepairWithPart(partData);
-                    }
+                    nextLift.AssignMechanicToLift();
                 }
             }
-
+            SoundEffectsManager.Instance.PlaySound("BuySound");
             UpdateInventoryUI();
+            UIManager.Instance.ShowNotification($"Part {partData.partName} \n successfully purchased");
         }
         else
         {
-            Debug.Log("No money.");
+            UIManager.Instance.ShowNotification("Not enough money!");
         }
     }
 
+    
+    
     private void UpdateMoneyUI()
     {
         if (moneyText != null)

@@ -63,6 +63,7 @@ public class Inventory :  IInventory
                     lift.StartRepair(new CarPartData { partType = part }, GetRepairTime(part));
                 }
             }
+            
         }
     }
     

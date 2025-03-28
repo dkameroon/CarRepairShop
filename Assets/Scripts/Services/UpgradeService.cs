@@ -46,7 +46,6 @@ public class UpgradeService : IUpgradeService
 
     public void PurchaseUpgrade(UpgradeData upgrade)
     {
-        SoundEffectsManager.Instance.PlaySound("UpgradeSound");
         if (upgrade == null)
         {
             Debug.LogError("UpgradeData is null!");
@@ -62,7 +61,8 @@ public class UpgradeService : IUpgradeService
                 _gameManager.SpendMoney(cost);
                 ApplyUpgrade(upgrade);
                 LevelUp(upgrade);
-
+                SoundEffectsManager.Instance.PlaySound("UpgradeSound");
+                UIManager.Instance.ShowNotification($"Upgrade {upgrade.upgradeName} \n successfully purchased");
                 _upgradeUI.UpdateUpgradeUI();
             }
             else
@@ -72,7 +72,7 @@ public class UpgradeService : IUpgradeService
         }
         else
         {
-            Debug.Log("Not enough money to purchase this upgrade.");
+            UIManager.Instance.ShowNotification("Not enough money!");
         }
     }
 

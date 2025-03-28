@@ -18,6 +18,14 @@ public class MechanicService : IMechanicService
 
     public MechanicService(IGameManager gameManager, GameObject mechanicPrefab)
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogError("Multiple instances of MechanicService detected!");
+        }
         
         _gameManager = gameManager;
         _mechanicPrefab = mechanicPrefab;
@@ -73,14 +81,20 @@ public class MechanicService : IMechanicService
         return null;
     }
 
-    public void AssignMechanicToLift(ILift lift)
+    public IMechanic AssignMechanicToLift(ILift lift)
     {
-        IMechanic availableMechanic = GetAvailableMechanic();
-        if (availableMechanic != null && !lift.IsOccupied)
+        foreach (IMechanic mechanic in _mechanics)
         {
-            availableMechanic.MoveToLift(lift);
+            if (!mechanic.IsBusy)
+            {
+                lift.SetReserved(true);
+                mechanic.MoveToLift(lift);
+                return mechanic;
+            }
         }
+        return null;
     }
+
 
     public void BuyAndSpawnMechanic(int mechanicCost)
     {

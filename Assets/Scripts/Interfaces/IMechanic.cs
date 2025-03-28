@@ -6,4 +6,5 @@ public interface IMechanic
     void MoveToSpawn();
     void StartRepair(ILift lift);
     bool IsBusy { get; }
+    void CompleteRepair();
 }

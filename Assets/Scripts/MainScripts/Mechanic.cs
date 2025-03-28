@@ -1,23 +1,27 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Mechanic : MonoBehaviour, IMechanic
 {
-    [SerializeField]private NavMeshAgent _agent;
+    [SerializeField] private NavMeshAgent _agent;
     private Vector3 _spawnPoint;
     private ILift _currentLift;
-    private Animator animator;
-    public bool IsBusy { get; private set; } 
+    private Animator _animator;
+    public bool IsBusy { get; private set; }
     
     private IInventory _inventory;
     
+
+    private static readonly int WalkHash = Animator.StringToHash("IsWalking");
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _spawnPoint = transform.position;
-        animator = GetComponent<Animator>();
-        
+        _animator = GetComponent<Animator>();
+
         _agent.stoppingDistance = 0.5f;
     }
 
@@ -31,45 +35,58 @@ public class Mechanic : MonoBehaviour, IMechanic
         if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
         {
             _agent.isStopped = true;
-            animator.SetBool("IsWalking", false);
+            _animator.SetBool(WalkHash, false);
         }
     }
-    
-
 
     public void MoveToLift(ILift lift)
     {
         if (_agent != null)
         {
-            animator.SetBool("IsWalking", true);
+            _animator.SetBool(WalkHash, true);
             _agent.isStopped = false;
-            _agent.SetDestination(lift.GetForwardPosition()*6 + lift.GetPosition());
+            _agent.SetDestination(lift.GetForwardPosition() * 6 + lift.GetPosition());
             IsBusy = true;
             _currentLift = lift;
+            var requiredPart = _currentLift.GetCurrentCar()?.GetRequiredPartData();
+            if (requiredPart != null && _inventory.HasPart(requiredPart.partType))
+            {
+                _currentLift.StartRepair(requiredPart, requiredPart.repairTime, this);
+            }
         }
     }
-
 
     public void MoveToSpawn()
     {
-        IsBusy = false;
-        animator.SetBool("IsWalking", true);
-        _agent.isStopped = false;
-        _agent.SetDestination(_spawnPoint);
-    }
+        if (_spawnPoint != null)
+        {
+            IsBusy = false;
+            _animator.SetBool(WalkHash, true);
+            _agent.isStopped = false;
+            _agent.SetDestination(_spawnPoint);
+        }
+        else
+        {
+            Debug.LogError("Spawn point not set for mechanic!");
+        }
+        }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_currentLift != null && other.gameObject == _currentLift.GetGameObject())
+        if (_currentLift != null && other.gameObject == _currentLift.GetGameObject() || other.CompareTag("Car"))
         {
-            animator.SetBool("IsWalking", false);
-            StartRepair(_currentLift);
-        }
-        else if (!IsBusy && Vector3.Distance(transform.position, _spawnPoint) < 1.5f) 
-        {
-            animator.SetBool("IsWalking", false);
+            Debug.Log("🔧 Механик прибыл к подъемнику, начинаем ремонт.");
+            _animator.SetBool(WalkHash, false);
         }
     }
+
+    public void CompleteRepair()
+    {
+        _currentLift.SetIsRepairInProgress(false);
+        IsBusy = false; 
+        MoveToSpawn();
+    }
+
 
     public void StartRepair(ILift lift)
     {
@@ -84,16 +101,26 @@ public class Mechanic : MonoBehaviour, IMechanic
 
             if (_inventory.HasPart(requiredPart.partType))
             {
-                lift.StartRepair(requiredPart, requiredPart.repairTime);
                 _inventory.RemoveItem(requiredPart.partType, 1);
-                MoveToSpawn();
+                _animator.SetBool(WalkHash, false);
+                StartCoroutine(RepairCoroutine(lift, requiredPart.repairTime));
             }
             else
             {
-                Debug.Log("Detail is not found !");
+                Debug.Log("❌ Деталь отсутствует, механик уходит!");
                 MoveToSpawn();
             }
         }
     }
 
+    private IEnumerator RepairCoroutine(ILift lift, float repairTime)
+    {
+        yield return new WaitForSeconds(repairTime);
+
+        _inventory.RemoveItem(lift.GetCurrentCar().GetRequiredPartData().partType, 1);
+        lift.StartRepair(lift.GetCurrentCar().GetRequiredPartData(), repairTime);
+        
+        _animator.SetBool(WalkHash, true);
+        MoveToSpawn();
+    }
 }
