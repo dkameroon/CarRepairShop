@@ -1,4 +1,4 @@
-# 🚗 Auto Repair Shop - Test Task
+# 🚗 Auto Repair Shop
 
 ## 📌 Project Overview
 
@@ -67,7 +67,7 @@ This project successfully implements a scalable and well-structured 3D idle-tyco
 
 ---
 
-# 🚗 Автосервис - Тестовое задание
+# 🚗 Автосервис
 
 ## 📌 Обзор проекта
 
